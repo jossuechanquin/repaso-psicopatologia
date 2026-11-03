@@ -1,0 +1,835 @@
+<meta name="claude:viewport-fit-sides" content="cover">
+<title>Repaso Psicopatología</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Archivo:wght@400;500;600;700&display=swap">
+<style>
+/* Cuaderno clínico: fichas apiladas sobre papel frío, acento ámbar para el progreso */
+:root{
+  --papel:#F2F4F3; --ficha:#FFFFFF; --ficha2:#E9EDEC;
+  --tinta:#15242F; --tinta2:#4A5C68; --tinta3:#7B8B95;
+  --marca:#0E6E72; --marca-sw:#D8EAE9; --ambar:#B4651A; --ambar-sw:#F6E6D4;
+  --bien:#1F6B3F; --bien-sw:#DCEDE2; --mal:#9B2C2C; --mal-sw:#F6DFDF;
+  --linea:#D3DAD8; --sombra:rgba(21,36,47,.07);
+  --d:'Fraunces',Georgia,serif; --s:'Archivo',system-ui,-apple-system,sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --papel:#10181E; --ficha:#18242C; --ficha2:#1F2E37;
+  --tinta:#E8EDEB; --tinta2:#A9B8BF; --tinta3:#7A8B94;
+  --marca:#4FB5B0; --marca-sw:#133538; --ambar:#E0A264; --ambar-sw:#36251A;
+  --bien:#64C98B; --bien-sw:#12301F; --mal:#E98C8C; --mal-sw:#331818;
+  --linea:#2C3B45; --sombra:rgba(0,0,0,.3); color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --papel:#10181E; --ficha:#18242C; --ficha2:#1F2E37;
+  --tinta:#E8EDEB; --tinta2:#A9B8BF; --tinta3:#7A8B94;
+  --marca:#4FB5B0; --marca-sw:#133538; --ambar:#E0A264; --ambar-sw:#36251A;
+  --bien:#64C98B; --bien-sw:#12301F; --mal:#E98C8C; --mal-sw:#331818;
+  --linea:#2C3B45; --sombra:rgba(0,0,0,.3); color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--papel);color:var(--tinta);font-family:var(--s);font-size:16px;line-height:1.55;margin:0}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:20;background:var(--papel)}
+.wrap{max-width:720px;margin:0 auto;
+  padding-left:max(16px,env(safe-area-inset-left,0px));
+  padding-right:max(16px,env(safe-area-inset-right,0px));
+  padding-block:0 40px}
+h1,h2,h3{font-family:var(--d);font-weight:600;text-wrap:balance;margin:0;line-height:1.2}
+
+/* ---- barra superior ---- */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:15;background:var(--papel);
+  border-bottom:1px solid var(--linea)}
+.top .in{max-width:720px;margin:0 auto;display:flex;align-items:center;gap:10px;
+  padding-left:max(16px,env(safe-area-inset-left,0px));
+  padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:10px}
+.brand{font-family:var(--d);font-weight:700;font-size:16px;letter-spacing:-.01em;margin-right:auto;
+  display:flex;align-items:center;gap:7px;cursor:pointer;background:none;border:0;color:var(--tinta);padding:0}
+.dot{width:9px;height:9px;border-radius:50%;background:var(--marca);flex:none}
+.hud{display:flex;gap:6px;align-items:center}
+.hud[hidden]{display:none}
+.chip{font-size:12.5px;font-weight:600;padding:3px 9px;border-radius:999px;
+  background:var(--ficha2);color:var(--tinta2);font-variant-numeric:tabular-nums;white-space:nowrap}
+.chip.pts{background:var(--marca-sw);color:var(--marca)}
+.chip.rac{background:var(--ambar-sw);color:var(--ambar)}
+.iconbtn{background:none;border:1px solid var(--linea);border-radius:8px;color:var(--tinta2);
+  width:32px;height:32px;cursor:pointer;font-size:14px;line-height:1;flex:none}
+.iconbtn:hover{border-color:var(--marca);color:var(--marca)}
+.bar{height:3px;background:var(--ficha2)}
+.bar i{display:block;height:100%;background:var(--marca);width:0;transition:width .3s}
+
+/* ---- portada ---- */
+.hero{padding-block:34px 10px}
+.kicker{font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--marca);font-weight:700}
+.hero h1{font-size:clamp(30px,8vw,44px);margin:10px 0 8px}
+.hero p{color:var(--tinta2);margin:0;max-width:52ch}
+.rule{height:4px;background:var(--ambar);width:58px;border-radius:2px;margin:16px 0 0}
+
+h2.sec{font-size:19px;margin:30px 0 4px}
+.sub{color:var(--tinta3);font-size:14px;margin:0 0 14px}
+
+/* ---- tarjetas de opción ---- */
+.cards{display:grid;gap:11px}
+.card{background:var(--ficha);border:1px solid var(--linea);border-radius:13px;padding:15px 16px;
+  cursor:pointer;text-align:left;font:inherit;color:inherit;width:100%;display:block;
+  transition:border-color .15s,transform .1s;box-shadow:0 1px 2px var(--sombra)}
+.card:hover{border-color:var(--marca)}
+.card:active{transform:scale(.995)}
+.card.on{border-color:var(--marca);background:var(--marca-sw)}
+.card h3{font-size:17px;margin-bottom:3px}
+.card p{margin:0;font-size:14px;color:var(--tinta2)}
+.card .tag{float:right;font-size:12px;font-weight:700;color:var(--marca);
+  background:var(--marca-sw);padding:2px 8px;border-radius:999px;margin-left:10px}
+.g2{grid-template-columns:1fr 1fr}
+@media(max-width:520px){.g2{grid-template-columns:1fr}}
+
+/* ---- filtros ---- */
+.pills{display:flex;flex-wrap:wrap;gap:7px;margin:0 0 6px}
+.pill{font:inherit;font-size:13.5px;font-weight:600;padding:6px 13px;border-radius:999px;cursor:pointer;
+  background:var(--ficha);border:1px solid var(--linea);color:var(--tinta2)}
+.pill[aria-pressed="true"]{background:var(--marca);border-color:var(--marca);color:#fff}
+
+.btn{font:inherit;font-weight:600;font-size:16px;padding:13px 22px;border-radius:11px;cursor:pointer;
+  background:var(--marca);color:#fff;border:0;width:100%;margin-top:18px;box-shadow:0 1px 3px var(--sombra)}
+.btn:hover{filter:brightness(1.08)}
+.btn.ghost{background:none;border:1px solid var(--linea);color:var(--tinta2);box-shadow:none}
+.btn.ghost:hover{border-color:var(--marca);color:var(--marca);filter:none}
+.row{display:flex;gap:10px}
+.row .btn{margin-top:0}
+
+/* ---- pregunta ---- */
+.meta{display:flex;gap:7px;align-items:center;margin:20px 0 10px;flex-wrap:wrap}
+.lbl{font-size:11.5px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;
+  padding:3px 9px;border-radius:5px;background:var(--ficha2);color:var(--tinta2)}
+.lbl.b{background:var(--marca-sw);color:var(--marca)}
+.lbl.star{background:var(--ambar-sw);color:var(--ambar)}
+.q{font-family:var(--d);font-size:clamp(19px,4.6vw,24px);font-weight:600;line-height:1.3;margin:0 0 17px}
+.opts{display:grid;gap:9px}
+.opt{text-align:left;font:inherit;font-size:15px;background:var(--ficha);border:1.5px solid var(--linea);
+  border-radius:11px;padding:12px 14px;cursor:pointer;color:inherit;display:flex;gap:11px;align-items:flex-start;
+  transition:border-color .13s,background .13s}
+.opt:hover:not(:disabled){border-color:var(--marca)}
+.opt:disabled{cursor:default}
+.key{font-size:12px;font-weight:700;background:var(--ficha2);color:var(--tinta3);
+  width:21px;height:21px;border-radius:5px;display:grid;place-items:center;flex:none;margin-top:1px}
+.opt.ok{border-color:var(--bien);background:var(--bien-sw)}
+.opt.ok .key{background:var(--bien);color:#fff}
+.opt.no{border-color:var(--mal);background:var(--mal-sw)}
+.opt.no .key{background:var(--mal);color:#fff}
+.fb{margin-top:14px;padding:13px 15px;border-radius:11px;border-left:4px solid var(--linea);background:var(--ficha)}
+.fb.ok{border-left-color:var(--bien)} .fb.no{border-left-color:var(--mal)}
+.fb .v{font-weight:700;font-size:15px;margin-bottom:3px}
+.fb .v.ok{color:var(--bien)} .fb .v.no{color:var(--mal)}
+.fb p{margin:0;font-size:14.5px;color:var(--tinta2)}
+
+/* ---- flashcard ---- */
+.flash{background:var(--ficha);border:1px solid var(--linea);border-radius:16px;padding:30px 22px;
+  min-height:215px;display:grid;place-items:center;text-align:center;cursor:pointer;
+  box-shadow:0 2px 6px var(--sombra)}
+.flash .term{font-family:var(--d);font-size:clamp(24px,6vw,32px);font-weight:600}
+.flash .def{font-size:15.5px;color:var(--tinta2);max-width:46ch;line-height:1.6}
+.hint{text-align:center;color:var(--tinta3);font-size:13px;margin-top:11px}
+
+/* ---- tablas ---- */
+.tcard{background:var(--ficha);border:1px solid var(--linea);border-radius:13px;padding:16px;margin-top:14px}
+.tcard h3{font-size:18px;color:var(--marca);margin-bottom:12px}
+.slot{margin-bottom:11px}
+.slot .cl{font-size:11.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--tinta3);
+  display:block;margin-bottom:4px}
+.slot select{width:100%;font:inherit;font-size:14.5px;padding:9px 10px;border-radius:9px;
+  border:1.5px solid var(--linea);background:var(--ficha2);color:var(--tinta)}
+.slot.ok select{border-color:var(--bien);background:var(--bien-sw)}
+.slot.no select{border-color:var(--mal);background:var(--mal-sw)}
+.slot .real{font-size:13.5px;color:var(--bien);margin-top:4px;display:none}
+.slot.no .real{display:block}
+
+/* ---- caso ---- */
+.ficha-caso{background:var(--ficha);border:1px solid var(--linea);border-radius:13px;padding:16px;margin-bottom:16px}
+.ficha-caso dl{margin:0;display:grid;gap:9px}
+.ficha-caso dt{font-size:11.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--marca)}
+.ficha-caso dd{margin:2px 0 0;font-size:14.5px;color:var(--tinta2)}
+
+/* ---- resultado ---- */
+.score{text-align:center;padding:26px 0 6px}
+.score .n{font-family:var(--d);font-size:clamp(50px,15vw,76px);font-weight:700;line-height:1;color:var(--marca);
+  font-variant-numeric:tabular-nums}
+.score .of{color:var(--tinta3);font-size:15px;margin-top:4px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin:22px 0 4px}
+.stat{background:var(--ficha);border:1px solid var(--linea);border-radius:11px;padding:12px 8px;text-align:center}
+.stat b{display:block;font-family:var(--d);font-size:23px;font-variant-numeric:tabular-nums}
+.stat span{font-size:11.5px;color:var(--tinta3);letter-spacing:.04em;text-transform:uppercase;font-weight:600}
+.verdict{text-align:center;font-size:15.5px;color:var(--tinta2);margin:14px auto 0;max-width:44ch}
+
+.foot{margin-top:34px;padding-top:16px;border-top:1px solid var(--linea);font-size:12.5px;color:var(--tinta3)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+.pop{animation:pop .22s ease-out}
+@keyframes pop{from{transform:scale(.97);opacity:.6}to{transform:scale(1);opacity:1}}
+</style>
+
+<div class="top">
+  <div class="in">
+    <button class="brand" id="home"><span class="dot"></span>Repaso Psicopatología</button>
+    <div class="hud" id="hud" hidden>
+      <span class="chip pts" id="cPts">0 pts</span>
+      <span class="chip rac" id="cRac" hidden>racha 0</span>
+      <span class="chip" id="cPos">1/1</span>
+    </div>
+    <button class="iconbtn" id="tema" title="Cambiar tema" aria-label="Cambiar tema">◐</button>
+  </div>
+  <div class="bar"><i id="bar"></i></div>
+</div>
+
+<div class="wrap">
+
+  <section id="scInicio">
+    <div class="hero">
+      <div class="kicker">Psicopatología General · USAC</div>
+      <h1>Repaso para el examen final</h1>
+      <p>Preguntas del primer parcial, del segundo y del ejercicio de diagnóstico GLADP, armadas desde los exámenes reales y las diapositivas del Dr. Lemus.</p>
+      <div class="rule"></div>
+    </div>
+    <h2 class="sec">Escoge tu ruta</h2>
+    <p class="sub">Puedes cambiarla después desde el inicio.</p>
+    <div class="cards">
+      <button class="card" data-ruta="top"><span class="tag" id="nTop">—</span>
+        <h3>Ruta esencial</h3><p>Solo lo que aparece repetido en los exámenes o sale directo de las diapositivas. Para repasar contrarreloj.</p></button>
+      <button class="card" data-ruta="full"><span class="tag" id="nFull">—</span>
+        <h3>Ruta completa</h3><p>Todo el banco, incluidas las preguntas de refuerzo. Para cubrir el temario entero.</p></button>
+    </div>
+    <div class="foot">Material de estudio hecho por estudiantes. Ante cualquier duda, manda la versión de la diapositiva del catedrático.</div>
+  </section>
+
+  <section id="scModos" hidden>
+    <h2 class="sec" style="margin-top:26px">¿Qué quieres practicar?</h2>
+    <p class="sub" id="subModo">Ruta esencial activa.</p>
+    <div class="pills" id="filtros" role="group" aria-label="Filtrar por bloque"></div>
+    <div class="cards g2" style="margin-top:12px">
+      <button class="card" data-modo="quiz"><h3>Quiz</h3><p>Opción múltiple con puntaje y racha. El modo principal.</p></button>
+      <button class="card" data-modo="flash"><h3>Tarjetas</h3><p>Término y definición, para memorizar la Serie I.</p></button>
+      <button class="card" data-modo="tabla"><h3>Tablas</h3><p>Completar el cuadro de los ocho modelos teóricos.</p></button>
+      <button class="card" data-modo="caso"><h3>Caso GLADP</h3><p>Resolver el caso de JJ paso a paso, como en el examen.</p></button>
+    </div>
+    <div id="zonaFallos"></div>
+  </section>
+
+  <section id="scQuiz" hidden>
+    <div class="meta" id="qMeta"></div>
+    <h2 class="q" id="qTxt"></h2>
+    <div class="opts" id="qOpts"></div>
+    <div id="qFb"></div>
+    <button class="btn" id="qNext" hidden>Siguiente</button>
+  </section>
+
+  <section id="scFlash" hidden>
+    <div class="meta" id="fMeta"></div>
+    <div class="flash" id="fCard"><div class="term" id="fTxt"></div></div>
+    <p class="hint">Toca la tarjeta para voltearla</p>
+    <div class="row" style="margin-top:16px">
+      <button class="btn ghost" id="fPrev">Anterior</button>
+      <button class="btn" id="fNext">Siguiente</button>
+    </div>
+  </section>
+
+  <section id="scTabla" hidden>
+    <h2 class="sec" style="margin-top:24px">Completa el cuadro</h2>
+    <p class="sub">Escoge la celda correcta para cada modelo. Al revisar se marcan los aciertos.</p>
+    <div id="tZona"></div>
+    <button class="btn" id="tRevisar">Revisar cuadro</button>
+    <button class="btn ghost" id="tVolver" hidden>Volver a los modos</button>
+  </section>
+
+  <section id="scCaso" hidden>
+    <h2 class="sec" style="margin-top:24px" id="cTit"></h2>
+    <p class="sub" id="cFicha"></p>
+    <div class="ficha-caso" id="cDatos"></div>
+    <div class="meta" id="kMeta"></div>
+    <h2 class="q" id="kTxt"></h2>
+    <div class="opts" id="kOpts"></div>
+    <div id="kFb"></div>
+    <button class="btn" id="kNext" hidden>Siguiente</button>
+  </section>
+
+  <section id="scFin" hidden>
+    <div class="score"><div class="n" id="rPct">0%</div><div class="of" id="rOf"></div></div>
+    <div class="stats">
+      <div class="stat"><b id="rOk">0</b><span>Aciertos</span></div>
+      <div class="stat"><b id="rNo">0</b><span>Fallos</span></div>
+      <div class="stat"><b id="rRac">0</b><span>Mejor racha</span></div>
+    </div>
+    <p class="verdict" id="rTxt"></p>
+    <button class="btn" id="rFallos" hidden>Repasar solo las que fallé</button>
+    <button class="btn ghost" id="rOtra">Otro modo</button>
+  </section>
+
+</div>
+
+<script>
+// b: bloque (p1, p2, gl) · t: tema · top: entra en la ruta esencial
+// p: pregunta · r: respuesta correcta · d: distractores · n: nota al pie
+const BANCO = [
+
+/* ========== P1 · CONCEPTOS BASE ========== */
+{b:'p1',t:'Conceptos base',top:1,p:'¿Qué es un signo?',r:'Una manifestación objetiva y observable, identificada por el clínico',d:['Una manifestación subjetiva que el paciente expresa verbalmente','Un conjunto de síntomas consensuado por expertos','Una creencia falsa irreductible a la lógica'],n:'Signo: taquicardia, llanto, evitación. Síntoma: lo que el paciente dice que siente.'},
+{b:'p1',t:'Conceptos base',top:1,p:'¿Qué es un síntoma?',r:'Una manifestación subjetiva expresada por el paciente',d:['Una manifestación observable detectada por el clínico','Una alteración detectable mediante pruebas de laboratorio','Un criterio consensuado por un grupo de expertos'],n:'Ejemplos: afirmación de miedo, delirios y alucinaciones referidos por el paciente.'},
+{b:'p1',t:'Conceptos base',top:1,p:'¿Cuál es la diferencia entre trastorno y enfermedad?',r:'El trastorno es un conjunto de signos y síntomas consensuado por expertos; la enfermedad tiene una causa física común conocida',d:['El trastorno es grave y la enfermedad es leve','El trastorno es mental y la enfermedad siempre es física','El trastorno dura menos de seis meses y la enfermedad es crónica'],n:'La clave es la etiología: el trastorno es multifactorial, la enfermedad tiene causa unívoca.'},
+{b:'p1',t:'Conceptos base',top:0,p:'¿Qué es un síndrome?',r:'Conjunto de signos y síntomas que aparecen juntos de forma recurrente, sin etiología única conocida',d:['Período delimitado con síntomas que alcanzan umbral de trastorno','Causa directa que origina una patología','Característica que aumenta la probabilidad de enfermar'],n:'No confundir con episodio, que es una delimitación temporal.'},
+{b:'p1',t:'Conceptos base',top:0,p:'¿Qué es un criterio diagnóstico?',r:'Característica del trastorno consensuada por un grupo de expertos que ayuda a determinar el problema',d:['La causa biológica demostrada de un trastorno','El resultado de una prueba psicométrica estandarizada','La opinión clínica del evaluador sobre el paciente'],n:'Los manuales que los recogen son el DSM-5, la CIE-10 y el GLADP.'},
+{b:'p1',t:'Conceptos base',top:1,p:'¿Qué es un factor de riesgo?',r:'Condición que aumenta la probabilidad de desarrollar un trastorno, sin ser determinante',d:['La causa directa e indispensable que produce la patología','Un síntoma precoz que anuncia el trastorno','Una característica presente en todos los enfermos'],n:'Causa = produce. Factor de riesgo = aumenta la probabilidad.'},
+{b:'p1',t:'Conceptos base',top:0,p:'¿Qué es un episodio?',r:'Período delimitado de tiempo con síntomas continuos que alcanzan el umbral de un trastorno',d:['Conjunto de signos sin etiología conocida','Primera manifestación de una enfermedad crónica','Recaída después de un tratamiento completo'],n:'Ejemplo típico: el episodio depresivo mayor.'},
+{b:'p1',t:'Conceptos base',top:1,p:'Etimológicamente, ¿qué significa PATHOS?',r:'Pasión: sufrir, padecer o experimentar, y vivir la emoción',d:['Enfermedad del alma o desorden del espíritu','Conocimiento verdadero de lo que aqueja','Desviación respecto de la norma estadística'],n:'El núcleo de la psicopatología es el sufrimiento propio y el proyectado hacia los demás.'},
+
+/* ========== P1 · SALUD MENTAL ========== */
+{b:'p1',t:'Salud mental',top:1,p:'¿Cómo define Carmelo Monedero la psicopatología?',r:'Conocimiento inadecuado de la realidad',d:['Conducta dañina hacia sí mismo y hacia los demás','Desequilibrio neuroquímico del sistema nervioso central','Ausencia de un proyecto de vida escogido en libertad'],n:'La segunda opción corresponde a Maher y Maher; la cuarta, al modelo fenomenológico-existencial.'},
+{b:'p1',t:'Salud mental',top:1,p:'¿Cuáles son los tres criterios de psicopatología de Monedero?',r:'Conocimiento inadecuado de la realidad, falta de sintonía emocional con los otros y comportamiento inadecuado al contexto',d:['Prueba de realidad, integración de la identidad y mecanismos de defensa','Conducta dañina, cognición alterada y afecto inapropiado','Autorrealización, autodefinición e individualidad'],n:'La segunda es de Kernberg; la tercera, de Maher y Maher; la cuarta, de Goldstein.'},
+{b:'p1',t:'Salud mental',top:1,p:'¿Cuáles son los tres abordajes teóricos de la psicopatología según Monedero?',r:'Explicación, interpretación y descripción fenomenológica',d:['Observación, experimentación y verificación','Diagnóstico, pronóstico y tratamiento','Anamnesis, exploración y formulación'],n:'Explicación: neurobiológico y conductual. Interpretación: psicoanálisis. Fenomenológica: humanista, Gestalt y existencial.'},
+{b:'p1',t:'Salud mental',top:1,p:'¿Cuáles son los criterios de psicopatología de Maher y Maher?',r:'Conducta dañina, cognición alterada, afecto inapropiado al contexto y conducta impredecible',d:['Prueba de realidad, identidad integrada y defensas maduras','Vacío existencial, falta de libertad e incoherencia con los valores','Desviación estadística, sufrimiento subjetivo y deterioro funcional'],n:'La diapositiva del Dr. Lemus los llama «marcadores clínicos» y son cuatro.'},
+{b:'p1',t:'Salud mental',top:1,p:'¿Cuáles son los tres criterios de salud mental de Otto Kernberg?',r:'Prueba de realidad, integración de la identidad y mecanismos de defensa',d:['Autorrealización, autodefinición e individualidad','Autoconocimiento, trascendencia y afrontamiento','Valores, responsabilidad y proyecto de vida'],n:'Según cómo se combinen arrojan tres estructuras: neurosis, borderline y psicótica.'},
+{b:'p1',t:'Salud mental',top:0,p:'Las tres estructuras que resultan de aplicar los criterios de Kernberg son:',r:'Neurosis, borderline o límite, y psicótica',d:['Leve, moderada y grave','Neurosis, perversión y psicosis','Normal, limítrofe y patológica'],n:'Es la evaluación clínica estructural de la diapositiva.'},
+{b:'p1',t:'Salud mental',top:1,p:'¿Cuáles son los criterios de salud mental de Kurt Goldstein?',r:'Autorrealización y autodefinición: el potencial que define la individualidad',d:['La búsqueda de valores universales','La responsabilidad ante los propios actos','La capacidad de amar y trabajar'],n:'La segunda es de Littman, la tercera de Mowrer y la cuarta de Freud.'},
+{b:'p1',t:'Salud mental',top:0,p:'Según la diapositiva de «criterios de la esencia humana», ¿qué aporta O. H. Mowrer?',r:'La responsabilidad',d:['Los valores','La trascendencia','La autorrealización'],n:'Smith: valores. Littman: valores universales. Goldstein: autorrealización. Mowrer: responsabilidad.'},
+{b:'p1',t:'Salud mental',top:1,p:'¿Qué aportan Freud, Fromm y Szasz al concepto de salud mental, respectivamente?',r:'Autoconocimiento, trascendencia y afrontamiento',d:['Trascendencia, afrontamiento y autoconocimiento','Afrontamiento, autoconocimiento y trascendencia','Responsabilidad, libertad y autorrealización'],n:'Freud: reducir el inconsciente y la tensión. Fromm: trascender. Szasz: afrontar mediante actividad y aprendizaje.'},
+{b:'p1',t:'Salud mental',top:1,p:'¿Cuál es el objetivo de la ciencia según Erwin Singer?',r:'Mejorar el destino del ser humano y producir bienestar humano',d:['Describir y predecir los fenómenos observables','Alcanzar un conocimiento objetivo y verificable','Clasificar los trastornos mentales de forma consensuada'],n:'La diapositiva lo llama «el objetivo supremo».'},
+{b:'p1',t:'Salud mental',top:1,p:'Según Singer, ¿por qué es difícil definir la salud mental?',r:'Porque depende de percepciones individuales y subjetivas, de juicios de valor y de factores culturales cambiantes',d:['Porque aún no existen pruebas de laboratorio suficientemente sensibles','Porque los manuales diagnósticos se actualizan con demasiada frecuencia','Porque los pacientes tienden a ocultar sus síntomas al evaluador'],n:'A diferencia de las enfermedades físicas, que se diagnostican con pruebas objetivas.'},
+{b:'p1',t:'Salud mental',top:1,p:'¿En qué consiste el significado teleológico de la normalidad?',r:'Concebirla en función de la meta o fin (telos) de la conducta: el «deber ser»',d:['Concebirla como lo común y lo frecuente en una población','Concebirla como la ausencia de síntomas detectables','Concebirla según lo que cada cultura acepta como válido'],n:'Cuidado: «lo común, lo frecuente» es el significado estadístico, no el teleológico.'},
+{b:'p1',t:'Salud mental',top:0,p:'¿Qué escuela sostiene que para tener salud mental hay que satisfacer primero las necesidades básicas y de seguridad?',r:'La humanista o tercera fuerza',d:['La conductual','La psicodinámica','La cognitiva'],n:'Es la jerarquía de necesidades de Maslow.'},
+{b:'p1',t:'Salud mental',top:0,p:'¿Cuál es la recomendación de Littman para definir el bienestar humano?',r:'Buscar criterios universales de esencia humana',d:['Adoptar la definición de la Organización Mundial de la Salud','Medir el bienestar con escalas estandarizadas','Dejar que cada cultura defina sus propios criterios'],n:''},
+{b:'p1',t:'Salud mental',top:0,p:'¿Por qué hay que hablar de desarrollo humano antes que de salud mental?',r:'Porque la salud mental requiere primero estabilidad económica, nivel educativo adecuado y calidad de vida digna',d:['Porque el desarrollo humano es un concepto más antiguo','Porque la OMS lo exige en sus informes anuales','Porque el desarrollo humano es responsabilidad del Estado y la salud mental del individuo'],n:''},
+{b:'p1',t:'Salud mental',top:0,p:'Los tres niveles o pilares de la salud mental de la síntesis del curso son:',r:'Esencia individual, dimensión social y realidad clínica',d:['Biológico, psicológico y social','Prevención, tratamiento y rehabilitación','Individuo, familia y comunidad'],n:'Nivel 1: proyecto de vida y libertad. Nivel 2: desarrollo humano e IDH. Nivel 3: ausencia de marcadores patológicos.'},
+
+/* ========== P1 · DESARROLLO HUMANO ========== */
+{b:'p1',t:'Desarrollo humano',top:1,p:'¿Cuáles son los tres indicadores del Índice de Desarrollo Humano?',r:'Esperanza de vida al nacer, años de escolaridad e ingreso bruto per cápita',d:['Salud, educación y vivienda','Empleo, salario y seguridad social','Natalidad, mortalidad y migración'],n:'Vida larga y saludable, adquirir conocimiento y nivel de vida digno.'},
+{b:'p1',t:'Desarrollo humano',top:0,p:'¿En qué categoría de desarrollo humano está Guatemala y qué puesto ocupa?',r:'Desarrollo humano medio, alrededor del puesto 136',d:['Desarrollo humano bajo, alrededor del puesto 160','Desarrollo humano alto, alrededor del puesto 90','Desarrollo humano medio, alrededor del puesto 100'],n:'En 2019 ocupaba el puesto 127. Verifica a qué año se refiere la pregunta.'},
+{b:'p1',t:'Desarrollo humano',top:1,p:'¿Qué mide el DALY?',r:'Los años potenciales de vida perdidos más los años vividos con discapacidad',d:['Los años vividos combinando calidad y cantidad de vida','El costo económico anual de una enfermedad','La esperanza de vida ajustada por nivel educativo'],n:'El DALY es un mal que debe minimizarse; el QALY es un bien que debe maximizarse.'},
+{b:'p1',t:'Desarrollo humano',top:0,p:'¿Qué mide el QALY?',r:'Los años vividos combinando calidad y cantidad de vida',d:['Los años de vida perdidos por muerte prematura','El número de personas afectadas por un trastorno','Los años de escolaridad promedio de una población'],n:''},
+{b:'p1',t:'Desarrollo humano',top:1,p:'Según la diapositiva, ¿en qué cuatro cargas se descompone el Burden o carga de enfermedad?',r:'Económica, social, familiar y psicológica',d:['Física, mental, emocional y espiritual','Individual, familiar, comunitaria y nacional','Directa, indirecta, tangible e intangible'],n:'Las cuatro convergen en un impacto acumulado sobre la salud física.'},
+{b:'p1',t:'Desarrollo humano',top:0,p:'¿Cuáles son los tipos de temperamento según Thomas y Chess?',r:'Fácil, difícil y lento o de lento calor, más un grupo que no encaja en un solo tipo',d:['Sanguíneo, colérico, melancólico y flemático','Inhibido, desinhibido y mixto','Activo, pasivo y reactivo'],n:'Fácil 40 %, difícil 10 %, lento 15 %, mixto 35 %.'},
+{b:'p1',t:'Desarrollo humano',top:0,p:'¿Qué tipos de temperamento describe Kagan?',r:'Temperamento inhibido y reactividad alta',d:['Temperamento fácil y difícil','Temperamento activo y pasivo','Temperamento estable e inestable'],n:''},
+{b:'p1',t:'Desarrollo humano',top:0,p:'¿Cuáles son los tres grandes grupos de factores de riesgo para un trastorno mental?',r:'Biológicos, psicológicos y sociales',d:['Genéticos, perinatales y postnatales','Predisponentes, precipitantes y perpetuantes','Internos, externos y mixtos'],n:'La segunda lista corresponde a los factores de la formulación biopsicosocial.'},
+
+/* ========== P1 · HISTORIA Y MODELOS ========== */
+{b:'p1',t:'Historia',top:1,p:'¿Cuál fue el primer intento sistemático de comprensión psicológica del ser humano?',r:'El laboratorio de Wilhelm Wundt en Leipzig, en 1879',d:['La obra de Sigmund Freud en Viena, en 1900','La liberación de los enfermos por Pinel, en 1793','La primera clasificación de Kraepelin, en 1899'],n:'Su fundamento filosófico es la «perfectibilidad humana» de Condorcet.'},
+{b:'p1',t:'Historia',top:0,p:'¿Qué premisa hace posibles la psicoterapia y la psicopatología?',r:'Que el hombre tiene la posibilidad de cambio',d:['Que toda enfermedad mental tiene una causa biológica','Que el inconsciente determina la conducta','Que la conducta se aprende y se desaprende'],n:'En la Edad Antigua y Media predominaba el pensamiento mágico y no existía esa posibilidad.'},
+{b:'p1',t:'Historia',top:0,p:'¿Cuáles son las tres revoluciones del pensamiento humano?',r:'La copernicana, la darwiniana y la psicoanalítica',d:['La industrial, la científica y la digital','La de Pinel, la psicoanalítica y la psicofarmacológica','La griega, la renacentista y la ilustrada'],n:'La segunda opción son las tres revoluciones en psicopatología, no en el pensamiento humano.'},
+{b:'p1',t:'Historia',top:0,p:'¿Cuáles son las tres revoluciones en psicopatología?',r:'La liberación de los enfermos por Pinel, la psicoanalítica y la psicofarmacológica',d:['La copernicana, la darwiniana y la psicoanalítica','La conductual, la cognitiva y la humanista','La de Kraepelin, la de Bleuler y la de Schneider'],n:''},
+{b:'p1',t:'Historia',top:1,p:'¿Cuál era la etiología de los trastornos mentales en la Edad Media?',r:'Visión mística y teocéntrica: posesión demoníaca, brujería y castigo por el pecado',d:['Desequilibrio de los cuatro humores corporales','Alteración de los nervios y del fluido vital','Conflictos inconscientes de la infancia'],n:'La teoría de los humores es de Hipócrates, en la Edad Antigua.'},
+{b:'p1',t:'Modelos',top:1,p:'¿Cuál es la visión antropológica del modelo neurobiológico?',r:'Ve al ser humano como una máquina',d:['Hombre pulsional','Hombre procesador de datos','Hombre producto del aprendizaje'],n:''},
+{b:'p1',t:'Modelos',top:0,p:'¿Cuál es la visión antropológica del modelo cognitivo?',r:'Hombre procesador de datos, como una computadora',d:['Hombre con experiencia plena','Hombre relacional','Hombre con valores y proyecto de vida'],n:''},
+{b:'p1',t:'Modelos',top:0,p:'En el modelo Gestalt, ¿qué es la psicopatología?',r:'No tener cierre en las experiencias y quedar frustrado e inconcluso',d:['Tener ideas irreales e irracionales','Estar dominado por pulsiones mal manejadas','Carecer de un proyecto de vida'],n:'Se apoya en el principio de Zeigarnik.'},
+{b:'p1',t:'Modelos',top:1,p:'En el modelo fenomenológico-existencial, ¿qué es la salud mental?',r:'Tener un proyecto de vida escogido en libertad y responsabilidad, y ser coherente con él',d:['Tener las necesidades básicas satisfechas','Vivir las experiencias con plenitud y cerrarlas','Tener transacciones adultas con los demás'],n:'La psicopatología es el vacío existencial y la incoherencia con los valores profesados.'},
+{b:'p1',t:'Modelos',top:0,p:'¿Cuál es la base filosófica del modelo conductual?',r:'Empirismo, pragmatismo, positivismo, mecanicismo y utilitarismo',d:['Idealismo, fenomenología y estructuralismo','Fenomenología y existencialismo','Idealismo kantiano, fenomenología y personalismo'],n:'La segunda es del psicodinámico, la tercera de Gestalt y la cuarta del humanista.'},
+{b:'p1',t:'Modelos',top:0,p:'¿Cuál es la visión antropológica del análisis transaccional?',r:'Hombre relacional',d:['Hombre pulsional','Hombre realizado con autotrascendencia','Hombre como máquina'],n:'Su salud mental es tener transacciones adultas y saber manejar al Padre y al Niño.'},
+
+/* ========== P2 · DEFINICIONES ========== */
+{b:'p2',t:'Definiciones',top:0,p:'¿Qué significa etimológicamente «diagnóstico»?',r:'Conocimiento adecuado: de dia (verdadero o adecuado) y gnosis (conocimiento)',d:['Conocimiento a través de los signos','Distinción entre dos enfermedades','Juicio clínico sobre el pronóstico'],n:''},
+{b:'p2',t:'Definiciones',top:1,p:'¿Qué es el diagnóstico nosológico?',r:'Ponerle nombre de enfermedad al sufrimiento del paciente, apoyándose en los manuales',d:['Descartar los diagnósticos que pueden confundirse con el real','Registrar todos los trastornos que presenta el paciente','Describir la vivencia subjetiva del paciente'],n:''},
+{b:'p2',t:'Definiciones',top:1,p:'¿Qué es una alucinación?',r:'Percepción sin estimulación sensorial de un objeto externo, vivida como real',d:['Percepción de un estímulo real que se interpreta erróneamente','Creencia falsa irreductible a la lógica','Idea intrusiva que el paciente reconoce como propia'],n:'La primera opción es la ilusión; la segunda, el delirio; la tercera, la obsesión.'},
+{b:'p2',t:'Definiciones',top:1,p:'¿Qué es un delirio?',r:'Creencia falsa, basada en premisas falsas e irreductible a la lógica y a la razón',d:['Percepción sin objeto externo vivida como real','Idea intrusiva que genera malestar y se neutraliza con rituales','Alteración del estado de conciencia con desorientación'],n:'La diferencia con la obsesión es la certeza: el delirio no admite duda.'},
+{b:'p2',t:'Definiciones',top:1,p:'¿Qué es el sensorio?',r:'La conciencia de uno mismo y del entorno',d:['La reacción emocional observable del paciente','El estado emocional sostenido que el paciente refiere','La capacidad de asociar ideas de manera lógica'],n:'Comprende el estado de alerta y la orientación en tiempo, espacio y persona.'},
+{b:'p2',t:'Definiciones',top:1,p:'¿Qué es el afecto en el examen mental?',r:'La reacción emocional observable del paciente durante la entrevista',d:['El estado emocional sostenido que el paciente refiere','La conciencia de uno mismo y del entorno','La capacidad de controlar los impulsos'],n:'El ánimo es lo que el paciente refiere; el afecto es lo que el clínico observa.'},
+{b:'p2',t:'Definiciones',top:0,p:'¿Qué es la psicosis?',r:'Conjunto de síntomas que afectan la mente y hacen perder cierto contacto con la realidad',d:['Deficiencia de neuroplasticidad con pérdida de memoria','Conjunto de ideas intrusivas con rituales de neutralización','Alteración del ánimo sostenida por más de dos semanas'],n:''},
+{b:'p2',t:'Definiciones',top:1,p:'¿Qué es la comorbilidad?',r:'Presencia simultánea de dos o más trastornos, cada uno con sus propios criterios cumplidos',d:['Confusión entre dos diagnósticos parecidos','Evolución de un trastorno hacia otro más grave','Presencia de síntomas que no llegan a cumplir criterios'],n:'Es también uno de los tres desenlaces del proceso diagnóstico.'},
+{b:'p2',t:'Definiciones',top:1,p:'¿Qué es el diagnóstico diferencial?',r:'El examen de los diagnósticos que pueden confundirse con el real, para descartarlos',d:['El registro de todos los trastornos presentes en el paciente','La elección entre diagnóstico definitivo y provisional','La comparación del paciente con la población general'],n:'El diferencial resta; la comorbilidad suma.'},
+{b:'p2',t:'Definiciones',top:0,p:'¿Qué es una obsesión?',r:'Idea que irrumpe involuntariamente en el pensamiento y condiciona una actitud',d:['Creencia falsa sostenida con certeza absoluta','Conducta repetitiva que reduce la ansiedad','Percepción falsa que involucra los sentidos'],n:'La segunda opción describe la compulsión, no la obsesión.'},
+{b:'p2',t:'Definiciones',top:0,p:'¿Qué es la taquipsiquia?',r:'Aceleramiento del pensamiento',d:['Aceleramiento del habla','Enlentecimiento del pensamiento','Aumento de la actividad motora'],n:'Su contrario es la bradipsiquia. El habla acelerada es taquilalia.'},
+{b:'p2',t:'Definiciones',top:0,p:'¿Qué es el trauma complejo?',r:'El que implica experiencias negativas continuas, como abuso, abandono o violencia',d:['El que resulta de un único evento de gran magnitud','El que se produce por exposición a traumas ajenos','El que aparece más de seis meses después del evento'],n:'La segunda opción describe el trauma simple; la tercera, el trauma vicario.'},
+{b:'p2',t:'Definiciones',top:0,p:'¿Qué es un mecanismo de defensa?',r:'Herramienta psicológica personal e inconsciente que toma los traumas y los reprime',d:['Estrategia consciente para afrontar el estrés','Respuesta fisiológica automática ante una amenaza','Conducta aprendida que reduce la ansiedad'],n:''},
+{b:'p2',t:'Definiciones',top:0,p:'¿Qué es la logoterapia y quién la creó?',r:'La terapia que busca sanar a través del sentido de vida, creada por Viktor Frankl',d:['La terapia centrada en la persona, creada por Carl Rogers','La terapia racional emotiva, creada por Albert Ellis','La terapia gestáltica, creada por Fritz Perls'],n:'Es la técnica central del modelo fenomenológico-existencial.'},
+{b:'p2',t:'Definiciones',top:1,p:'¿Qué enuncia el principio de Zeigarnik?',r:'La tendencia a recordar mejor las tareas interrumpidas que las completadas',d:['La tendencia a repetir las conductas que son reforzadas','La tendencia a percibir los estímulos como totalidades','La tendencia a olvidar las experiencias displacenteras'],n:'Es el fundamento del cierre de experiencias en Gestalt.'},
+{b:'p2',t:'Definiciones',top:0,p:'¿Qué es la neurosis noógena?',r:'El sufrimiento que nace del vacío existencial y de la falta de sentido de vida',d:['La neurosis producida por un conflicto pulsional reprimido','La neurosis derivada de un aprendizaje desadaptativo','La neurosis causada por ideas irracionales'],n:'Concepto de Viktor Frankl: proviene de la dimensión espiritual o noética.'},
+{b:'p2',t:'Definiciones',top:1,p:'¿Qué es la distimia y cuánto debe durar?',r:'Estado depresivo leve de más de dos años; en niños, más de un año',d:['Episodio depresivo de al menos dos semanas','Alternancia de episodios depresivos e hipomaníacos','Estado de ánimo elevado de más de cuatro días'],n:'Se codifica como F34.1 y se llama también trastorno depresivo persistente.'},
+{b:'p2',t:'Definiciones',top:0,p:'¿Qué es la psicología profunda?',r:'Sinónimo del psicoanálisis: método de investigación para detectar problemas mentales',d:['El estudio de los procesos cognitivos superiores','La rama que estudia el inconsciente colectivo','El abordaje fenomenológico de la experiencia vivida'],n:''},
+
+/* ========== P2 · HISTORIA CLÍNICA Y EXAMEN MENTAL ========== */
+{b:'p2',t:'Historia clínica',top:1,p:'¿Por qué la historia clínica es diacrónica o longitudinal?',r:'Porque recorre la vida del paciente a lo largo del tiempo, desde los antecedentes hasta el padecimiento actual',d:['Porque se aplica en varias sesiones sucesivas','Porque registra el estado del paciente en el momento de la entrevista','Porque compara al paciente con otros de su misma edad'],n:'El examen mental, en cambio, es sincrónico y transversal.'},
+{b:'p2',t:'Historia clínica',top:1,p:'¿Por qué el examen mental es sincrónico y transversal?',r:'Porque hace un corte en el aquí y el ahora: describe el estado psíquico durante la entrevista',d:['Porque se aplica una sola vez en todo el proceso','Porque explora la historia del paciente desde la infancia','Porque usa pruebas estandarizadas y comparables'],n:''},
+{b:'p2',t:'Historia clínica',top:1,p:'¿Qué porcentaje del diagnóstico aportan la historia clínica y el examen mental juntos?',r:'Alrededor del 85 %',d:['Alrededor del 50 %','Alrededor del 15 %','Alrededor del 100 %'],n:'Las pruebas psicológicas y psiquiátricas aportan el 15 % restante.'},
+{b:'p2',t:'Historia clínica',top:1,p:'¿Cómo debe consignarse el motivo de consulta?',r:'Textualmente, con las palabras de quien consulta, seguido de la anotación sic',d:['Con la interpretación diagnóstica del clínico','Resumido en términos técnicos del manual','Omitiendo las expresiones coloquiales del paciente'],n:'Refleja la vivencia subjetiva y orienta el rapport.'},
+{b:'p2',t:'Historia clínica',top:1,p:'¿Por qué son importantes los antecedentes familiares?',r:'Por la carga hereditaria y la genética del paciente',d:['Porque permiten contactar a los familiares si el paciente empeora','Porque determinan el pronóstico de forma definitiva','Porque sustituyen la necesidad de pruebas complementarias'],n:'Identifican la predisposición biológica sobre la que actúan los demás factores.'},
+{b:'p2',t:'Historia clínica',top:1,p:'¿Cuáles son los cinco instrumentos o elementos diagnósticos?',r:'Evaluador clínico, historia clínica, examen mental, pruebas psicológicas y manuales de clasificación',d:['Anamnesis, exploración física, laboratorio, imágenes y diagnóstico','Observación, entrevista, cuestionarios, escalas y registro','Motivo de consulta, antecedentes, desarrollo, examen y plan'],n:'Se añade la consulta a otras especialidades o disciplinas.'},
+{b:'p2',t:'Historia clínica',top:1,p:'¿Por qué el evaluador clínico es él mismo un instrumento diagnóstico?',r:'Porque de su personalidad depende la capacidad de percepción que tenga sobre el paciente',d:['Porque es quien firma el informe final','Porque aplica las pruebas psicométricas','Porque decide qué manual de clasificación usar'],n:'Lo componen su personalidad, formación teórico-práctica, criterios y ética.'},
+{b:'p2',t:'Examen mental',top:1,p:'¿Cuántas partes tiene el examen mental y cuál es la primera?',r:'Once partes; la primera es la descripción general',d:['Nueve partes; la primera es el sensorio','Once partes; la primera es la psicomotricidad','Siete partes; la primera es el ánimo y afecto'],n:'Descripción general, psicomotricidad, sensorio, ánimo y afecto, lenguaje y habla, sensopercepción, pensamiento, cognición, juicio, control de impulsos y fiabilidad.'},
+{b:'p2',t:'Examen mental',top:1,p:'¿Qué evalúa el sensorio?',r:'El estado de conciencia y de alerta, y la orientación en tiempo, espacio y persona',d:['La capacidad de percibir estímulos de los cinco sentidos','La reacción emocional ante las preguntas del clínico','La memoria inmediata, reciente y remota'],n:'Es el apartado que primero se altera cuando hay causa orgánica.'},
+{b:'p2',t:'Examen mental',top:1,p:'¿Cuál es la diferencia entre ilusión y alucinación?',r:'En la ilusión hay un objeto externo que se interpreta mal; en la alucinación no hay objeto externo',d:['La ilusión es visual y la alucinación es auditiva','La ilusión es transitoria y la alucinación es permanente','La ilusión aparece en personas sanas y la alucinación solo en enfermos'],n:'Es la pregunta clásica del bloque de sensopercepción.'},
+{b:'p2',t:'Examen mental',top:1,p:'¿Cuáles son las cuatro características del pensamiento?',r:'Velocidad, curso, forma y contenido',d:['Coherencia, congruencia, lógica y abstracción','Claridad, certeza, espacialidad e integración','Atención, concentración, memoria y juicio'],n:'La segunda lista son las características de las alucinaciones.'},
+{b:'p2',t:'Examen mental',top:1,p:'La ensalada de palabras y los neologismos son alteraciones de la:',r:'Forma del pensamiento',d:['Velocidad del pensamiento','Curso del pensamiento','Contenido del pensamiento'],n:'La forma es la estructura sintáctica y lógica: coherencia y congruencia.'},
+{b:'p2',t:'Examen mental',top:0,p:'Los delirios y las obsesiones son alteraciones de la:',r:'Contenido del pensamiento',d:['Forma del pensamiento','Sensopercepción','Velocidad del pensamiento'],n:''},
+{b:'p2',t:'Examen mental',top:0,p:'¿Qué son el pensamiento tangencial y la fuga de ideas?',r:'Alteraciones del curso del pensamiento',d:['Alteraciones de la forma del pensamiento','Alteraciones del contenido del pensamiento','Alteraciones de la sensopercepción'],n:'Son características de los episodios maníacos que cursan con taquipsiquia.'},
+{b:'p2',t:'Examen mental',top:0,p:'¿Qué es la alexitimia y con qué signo suele acompañarse?',r:'La incapacidad de identificar y expresar las propias emociones; se acompaña de lenguaje aprosódico',d:['La ausencia de placer; se acompaña de anergia','La lentitud del pensamiento; se acompaña de bradilalia','La pérdida de contacto con la realidad; se acompaña de delirios'],n:''},
+{b:'p2',t:'Examen mental',top:1,p:'¿Qué significa un juicio «heterocrítico adecuado y autocrítico inadecuado»?',r:'Que juzga bien la realidad externa y a los demás, pero no evalúa críticamente sus propias ideas',d:['Que critica a los demás y se sobrevalora a sí mismo','Que acepta las críticas pero no las propias ideas','Que tiene conciencia plena de su enfermedad'],n:'Se articula con la conciencia de problema ausente: define el pobre insight.'},
+{b:'p2',t:'Examen mental',top:0,p:'¿Cuáles son las cuatro características de las alucinaciones?',r:'Claridad, certeza, espacialidad e integración a un delirio',d:['Velocidad, curso, forma y contenido','Intensidad, duración, frecuencia y congruencia','Visual, auditiva, olfatoria y gustativa'],n:'Se resumen en la frase de Franz Brentano sobre el estado psíquico que se percibe.'},
+{b:'p2',t:'Examen mental',top:0,p:'Las alucinaciones hipnagógicas son aquellas que:',r:'Preceden a la parálisis del sueño',d:['Se producen por descargas neuronales anormales','Resultan de daño en el hemisferio derecho','Aparecen solo bajo efecto de sustancias'],n:'Según su origen: ictales, de liberación e hipnagógicas.'},
+
+/* ========== P2 · PSICOSIS Y AFECTIVOS ========== */
+{b:'p2',t:'Psicosis',top:1,p:'¿Cuánto tiempo exige la CIE-10 para diagnosticar esquizofrenia?',r:'Más de un mes',d:['Más de seis meses','De uno a seis meses','Menos de un mes'],n:'El DSM-5 exige más de seis meses; de 1 a 6 es trastorno esquizofreniforme.'},
+{b:'p2',t:'Psicosis',top:1,p:'Un paciente con delirios y aislamiento de cuatro meses de evolución. ¿Qué diagnóstico corresponde según el DSM-5?',r:'Trastorno esquizofreniforme',d:['Esquizofrenia','Episodio psicótico agudo','Trastorno delirante'],n:'El DSM-5 exige más de seis meses para esquizofrenia; de 1 a 6 meses es esquizofreniforme.'},
+{b:'p2',t:'Psicosis',top:1,p:'¿Cuáles son las A de Bleuler?',r:'Autismo, alteraciones de la asociación, ambivalencia y afecto inadecuado',d:['Alucinaciones, agitación, agresividad y abulia','Anhedonia, anergia, abulia y aplanamiento','Atención, asociación, abstracción y afecto'],n:'Bleuler acuñó el término «esquizofrenia».'},
+{b:'p2',t:'Psicosis',top:1,p:'¿Cuáles son los síntomas de primer orden o patognomónicos de Schneider?',r:'Alucinatorios, delirantes y de alteración del Yo',d:['Autismo, ambivalencia, asociación y afecto','Afecto aplanado, abulia y aislamiento social','Delirios, alucinaciones y lenguaje desorganizado'],n:'La alteración del Yo incluye inserción, robo, lectura y difusión del pensamiento.'},
+{b:'p2',t:'Psicosis',top:1,p:'¿Cuáles de estos son síntomas negativos de la esquizofrenia?',r:'Afecto aplanado, abulia, anergia, anhedonia y aislamiento social',d:['Alucinaciones, delirios y agitación psicomotora','Ensalada de palabras, neologismos y agresividad','Taquipsiquia, verborrea y grandiosidad'],n:'Los positivos o productivos son los que añaden algo; los negativos, los que quitan.'},
+{b:'p2',t:'Psicosis',top:0,p:'¿Qué escala se usa para valorar los síntomas de la esquizofrenia?',r:'La escala PANSS',d:['La escala de Yale-Brown','La escala de Hamilton','La escala de Glasgow'],n:'Yale-Brown valora el TOC; Hamilton, la depresión y la ansiedad.'},
+{b:'p2',t:'Psicosis',top:0,p:'¿Qué es el síndrome de psicosis atenuada?',r:'El pródromo de la esquizofrenia en niños y adolescentes, sin pérdida de funcionalidad',d:['Una esquizofrenia tratada que ya no presenta síntomas','Una psicosis producida por consumo de sustancias','Un episodio psicótico de menos de un mes'],n:'Hay delirios y alucinaciones, pero no afectan la conciencia de realidad ni la funcionalidad.'},
+{b:'p2',t:'Psicosis',top:0,p:'¿Cuál es la principal diferencia entre el DSM-IV y el DSM-5 en el espectro de la esquizofrenia?',r:'La desaparición de los subtipos (paranoide, hebefrénica, catatónica, indiferenciada y residual)',d:['La inclusión del trastorno esquizoafectivo','La reducción del criterio temporal a un mes','La eliminación de los síntomas negativos'],n:''},
+{b:'p2',t:'Afectivos',top:1,p:'¿Cuántos síntomas y durante cuánto tiempo exige el episodio depresivo mayor?',r:'Cinco síntomas de nueve, durante al menos dos semanas',d:['Tres síntomas de nueve, durante al menos una semana','Cinco síntomas de nueve, durante al menos un mes','Tres síntomas de ocho, durante al menos cuatro días'],n:'La segunda opción corresponde al episodio maníaco; la cuarta, al hipomaníaco.'},
+{b:'p2',t:'Afectivos',top:1,p:'¿Cuántos síntomas y durante cuánto tiempo exige el episodio maníaco?',r:'Tres síntomas de nueve, durante al menos una semana',d:['Cinco síntomas de nueve, durante al menos dos semanas','Tres síntomas de ocho, durante al menos cuatro días','Cinco síntomas de nueve, durante al menos una semana'],n:'Se codifica F30.1 y cursa con deterioro funcional.'},
+{b:'p2',t:'Afectivos',top:1,p:'¿Cuántos síntomas y durante cuánto tiempo exige el episodio hipomaníaco?',r:'Tres síntomas, durante al menos cuatro días',d:['Tres síntomas, durante al menos una semana','Cinco síntomas, durante al menos dos semanas','Dos síntomas, durante al menos dos días'],n:'Se codifica F30.0.'},
+{b:'p2',t:'Afectivos',top:1,p:'¿Qué dos rasgos separan la hipomanía de la manía?',r:'En la hipomanía no hay deterioro funcional sino mejoría temporal, y no hay síntomas psicóticos',d:['En la hipomanía no hay euforia ni insomnio','En la hipomanía los síntomas son menos de tres','La hipomanía solo aparece en el trastorno bipolar tipo I'],n:''},
+{b:'p2',t:'Afectivos',top:0,p:'¿Cuál es la diferencia entre el trastorno depresivo mayor y el episodio depresivo mayor?',r:'El trastorno implica varios episodios a lo largo de la vida; el episodio es un cuadro único delimitado',d:['El trastorno es más grave que el episodio','El trastorno dura más de dos años y el episodio dos semanas','El trastorno siempre cursa con síntomas psicóticos'],n:''},
+{b:'p2',t:'Afectivos',top:1,p:'¿Cómo se clasifican los trastornos afectivos bipolares?',r:'TAB I: manía más episodio depresivo. TAB II: hipomanía más episodio depresivo. TAB III: ciclotimia',d:['TAB I: leve. TAB II: moderado. TAB III: grave','TAB I: con psicosis. TAB II: sin psicosis. TAB III: mixto','TAB I: de inicio temprano. TAB II: tardío. TAB III: senil'],n:''},
+{b:'p2',t:'Afectivos',top:1,p:'Un paciente lleva tres años con ánimo bajo leve sin llegar a cumplir cinco de nueve síntomas. ¿Qué diagnóstico es?',r:'Distimia o trastorno depresivo persistente (F34.1)',d:['Episodio depresivo mayor leve','Trastorno afectivo bipolar tipo III','Trastorno adaptativo con ánimo depresivo'],n:''},
+{b:'p2',t:'Trauma y ansiedad',top:1,p:'¿Qué separa el trastorno de estrés agudo del TEPT?',r:'El tiempo: en el agudo los síntomas duran menos de un mes; en el TEPT, más de un mes',d:['La gravedad de los síntomas','La presencia o ausencia de un estresor identificable','La edad del paciente al momento del trauma'],n:''},
+{b:'p2',t:'Trauma y ansiedad',top:1,p:'¿Cuáles son los criterios del TEPT?',r:'Síntomas por más de un mes, con evitación, reminiscencias, reviviscencias e hiperactivación del SNA',d:['Síntomas por más de seis meses con ideas delirantes','Crisis de angustia recurrentes con miedo a morir','Obsesiones y compulsiones que consumen más de una hora al día'],n:''},
+{b:'p2',t:'Trauma y ansiedad',top:0,p:'¿Cuáles son los trastornos derivados del trauma?',r:'TEPT, estrés agudo, trauma complejo, personalidad borderline y trastorno disocial',d:['Ansiedad generalizada, fobia social y fobias específicas','TOC, acumulación, dismórfico corporal y tricotilomanía','Depresión mayor, distimia y trastorno bipolar'],n:''},
+{b:'p2',t:'Trauma y ansiedad',top:1,p:'¿Cuáles son las ocho ideas irracionales de la cultura según Albert Ellis?',r:'Aprobación absoluta, perfección, catastrofismo, pensamiento polarizado, generalización excesiva, personalización, deber y etiqueta',d:['Negación, proyección, racionalización, represión, sublimación, humor, altruismo y anticipación','Autismo, asociación, ambivalencia, afecto, abulia, anergia, anhedonia y aislamiento','Claridad, certeza, espacialidad, integración, intensidad, duración, frecuencia y congruencia'],n:'La segunda lista son mecanismos de defensa; la tercera mezcla características de las alucinaciones.'},
+{b:'p2',t:'Trauma y ansiedad',top:1,p:'¿En qué consiste el ABCDE de Albert Ellis?',r:'A: acontecimiento. B: creencias. C: consecuencia. D: debate. E: efecto',d:['A: ansiedad. B: bloqueo. C: conducta. D: defensa. E: evitación','A: antecedente. B: base. C: causa. D: diagnóstico. E: evaluación','A: alerta. B: bienestar. C: cognición. D: decisión. E: ejecución'],n:'No son los hechos los que perturban, sino la interpretación que hacemos de ellos.'},
+{b:'p2',t:'Trauma y ansiedad',top:0,p:'¿Qué engloba el trastorno del espectro obsesivo-compulsivo?',r:'Los distintos TOC, el trastorno por acumulación, el dismórfico corporal, la excoriación y la tricotilomanía',d:['El TEPT, el estrés agudo y el trauma complejo','La ansiedad generalizada, la fobia social y el pánico','La esquizofrenia, el esquizoafectivo y el delirante'],n:''},
+
+/* ========== P2 · PSICOANÁLISIS ========== */
+{b:'p2',t:'Psicoanálisis',top:1,p:'¿Cuáles son los seis modelos de la mente del psicoanálisis?',r:'Tópico, económico, estructural, dinámico, evolutivo y registro de la experiencia',d:['Consciente, preconsciente, inconsciente, Ello, Yo y Superyó','Oral, anal, fálica, latencia, genital y madurez','Imaginario, simbólico, real, pulsional, defensivo y adaptativo'],n:'La segunda opción confunde los contenidos de dos modelos con los modelos mismos.'},
+{b:'p2',t:'Psicoanálisis',top:1,p:'¿Qué describe el modelo tópico o topográfico?',r:'Consciente, preconsciente e inconsciente',d:['Ello, Yo y Superyó','Imaginario, simbólico y real','Oral, anal y fálica'],n:'El estructural es Ello, Yo y Superyó; el registro de la experiencia es el de Lacan.'},
+{b:'p2',t:'Psicoanálisis',top:0,p:'¿Qué enuncia el modelo económico?',r:'Que la energía psíquica no se crea ni se destruye, solo se transforma',d:['Que la mente se divide en tres instancias en conflicto','Que el desarrollo atraviesa fases psicosexuales sucesivas','Que el inconsciente está estructurado como un lenguaje'],n:''},
+{b:'p2',t:'Psicoanálisis',top:0,p:'¿Por qué principio se rige el Ello y por cuál el Yo?',r:'El Ello por el principio de placer; el Yo por el principio de realidad',d:['El Ello por el principio de realidad; el Yo por el de placer','Ambos por el principio de realidad','El Ello por el principio moral; el Yo por el de placer'],n:'El Superyó exige el cumplimiento de las normas morales y sociales.'},
+{b:'p2',t:'Psicoanálisis',top:0,p:'¿De qué es producto el Superyó y qué dos componentes tiene?',r:'De la resolución del complejo de Edipo; tiene el Alter Yo o Ideal del Yo y la conciencia moral',d:['De la frustración oral; tiene el placer y el displacer','Del aprendizaje social; tiene las normas y las sanciones','De la angustia de castración; tiene el deseo y la defensa'],n:''},
+{b:'p2',t:'Psicoanálisis',top:1,p:'¿Cuáles son las fases del desarrollo psicosexual y sus edades?',r:'Oral (0-1), anal (2-3), fálica o genital (4-6, Edipo) y latencia',d:['Oral (0-2), anal (3-4), fálica (5-7) y genital (8-12)','Sensoriomotora, preoperacional, operaciones concretas y formales','Confianza, autonomía, iniciativa e industriosidad'],n:'La segunda lista es de Piaget; la tercera, de Erikson.'},
+{b:'p2',t:'Psicoanálisis',top:0,p:'¿Cuáles son los tres registros de Lacan?',r:'Imaginario, simbólico y real',d:['Consciente, preconsciente e inconsciente','Ello, Yo y Superyó','Padre, Adulto y Niño'],n:'La cuarta opción corresponde al análisis transaccional.'},
+{b:'p2',t:'Psicoanálisis',top:0,p:'¿Qué aportó Joseph Breuer y por qué abandonó el tratamiento?',r:'Reconoció que los síntomas se relacionan con la vida del paciente; abandonó por la transferencia, a propósito del caso de Anna O.',d:['Creó la asociación libre; abandonó por falta de resultados','Describió el complejo de Edipo; abandonó por desacuerdos con Freud','Fundó el psicoanálisis; abandonó por razones de salud'],n:'Freud continuó la investigación y desarrolló la regla de oro.'},
+{b:'p2',t:'Psicoanálisis',top:1,p:'¿En qué consiste la regla de oro o asociación libre?',r:'Expresar todo lo que acuda a la mente, sin filtrar, juzgar ni censurar',d:['Interpretar los sueños según un diccionario de símbolos','Repetir el síntoma hasta extinguirlo','Confrontar al paciente con sus contradicciones'],n:''},
+{b:'p2',t:'Psicoanálisis',top:0,p:'¿Cuáles son las manifestaciones del inconsciente?',r:'Sueños, actos fallidos o lapsus, transferencia, resistencia y discurso',d:['Delirios, alucinaciones, obsesiones y compulsiones','Signos, síntomas, síndromes y episodios','Pensamiento, lenguaje, memoria y atención'],n:''},
+{b:'p2',t:'Psicoanálisis',top:0,p:'¿Cuáles son las tres acepciones del psicoanálisis?',r:'Método de investigación, método terapéutico y teoría social',d:['Modelo tópico, estructural y dinámico','Interpretación, explicación y descripción','Diagnóstico, tratamiento y prevención'],n:''},
+{b:'p2',t:'Psicoanálisis',top:0,p:'Los mecanismos del nivel adaptativo o de alto nivel incluyen:',r:'Sublimación, humor, altruismo, supresión, anticipación y afiliación',d:['Negación, proyección y racionalización','Escisión, identificación proyectiva y fantasía autista','Acting out, agresión pasiva y retraimiento apático'],n:'La segunda es el nivel de desaprobación; la tercera, de distorsión mayor; la cuarta, el nivel de acción.'},
+
+/* ========== P2 · PROCESO DIAGNÓSTICO ========== */
+{b:'p2',t:'Proceso diagnóstico',top:1,p:'¿Cuál es el segundo paso del proceso diagnóstico?',r:'Ubicar el área predominantemente afectada',d:['Hacer el diagnóstico diferencial','Consultar los manuales de clasificación','Recopilar la información clínica'],n:'Es el paso que impide que el diferencial se vuelva una lista arbitraria.'},
+{b:'p2',t:'Proceso diagnóstico',top:1,p:'¿Cuáles son las cuatro áreas que se exploran para ubicar la afectación predominante?',r:'Afectividad, cognición, relaciones interpersonales y sensopercepción',d:['Biológica, psicológica, social y espiritual','Pensamiento, lenguaje, memoria y juicio','Motora, sensorial, emocional y conductual'],n:''},
+{b:'p2',t:'Proceso diagnóstico',top:0,p:'¿Cuál es el último paso del proceso diagnóstico?',r:'Elegir si el diagnóstico es definitivo, provisional o de comorbilidad',d:['Consultar los manuales de clasificación','Hacer el diagnóstico diferencial','Proponer el plan de tratamiento'],n:''},
+{b:'p2',t:'Proceso diagnóstico',top:1,p:'¿Cuáles son los principales manuales de clasificación diagnóstica?',r:'El DSM-5, la CIE-10 y el GLADP',d:['El DSM-5, el MMPI y el WAIS','La CIE-10, el PANSS y el Yale-Brown','El DSM-5, la CIE-10 y el MMPI'],n:'El MMPI, el WAIS, el PANSS y el Yale-Brown son pruebas, no manuales.'},
+
+/* ========== GLADP ========== */
+{b:'gl',t:'GLADP',top:1,p:'¿Cómo se llama el diagnóstico final en el GLADP?',r:'Formulación diagnóstica integral',d:['Diagnóstico multiaxial','Diagnóstico nosológico definitivo','Impresión diagnóstica'],n:'No termina en una etiqueta, sino en una comprensión del paciente con su contexto y recursos.'},
+{b:'gl',t:'GLADP',top:1,p:'¿Cuáles son los dos componentes de la formulación diagnóstica del GLADP?',r:'La formulación multiaxial estandarizada y la formulación idiográfica o personalizada',d:['El diagnóstico nosológico y el diagnóstico diferencial','La historia clínica y el examen mental','El diagnóstico principal y las comorbilidades'],n:'Se añade un formato de codificación para el registro práctico.'},
+{b:'gl',t:'GLADP',top:1,p:'¿Qué contiene el Eje I del GLADP?',r:'Trastornos clínicos y problemas relacionados, incluidos los síndromes culturales latinoamericanos',d:['Discapacidades','Factores contextuales','Calidad de vida'],n:'Es el único eje obligatorio, aunque debe indicarse si los demás se exploraron.'},
+{b:'gl',t:'GLADP',top:0,p:'¿Qué contiene el Eje III del GLADP?',r:'Factores contextuales',d:['Trastornos clínicos','Discapacidades','Calidad de vida'],n:'Sale de los antecedentes familiares, la constelación y la dinámica familiar.'},
+{b:'gl',t:'GLADP',top:0,p:'¿Cuáles son los tres apartados de la formulación idiográfica?',r:'Problemas clínicos y su contextualización, factores positivos del paciente, y expectativas sobre la salud',d:['Eje clínico, eje de discapacidades y eje contextual','Diagnóstico, pronóstico y tratamiento','Anamnesis, exploración y plan'],n:'Los ejes dicen qué tiene; la idiográfica dice quién es y qué se puede hacer.'},
+{b:'gl',t:'GLADP',top:1,p:'¿Qué recomienda el GLADP respecto de la comorbilidad?',r:'Diagnosticar por separado todos los trastornos, salvo las incompatibilidades expresamente advertidas',d:['Escoger siempre el diagnóstico más grave','Registrar solo el trastorno que motivó la consulta','Agrupar los trastornos en un único diagnóstico sindrómico'],n:''},
+{b:'gl',t:'GLADP',top:1,p:'¿Cuál es la diferencia de fondo entre el diferencial y la comorbilidad?',r:'El diferencial resta, descartando lo que no es; la comorbilidad suma, registrando todo lo que sí es',d:['El diferencial se hace al inicio y la comorbilidad al final del tratamiento','El diferencial lo hace el psicólogo y la comorbilidad el psiquiatra','El diferencial usa el DSM y la comorbilidad la CIE'],n:'Por eso el diferencial va en el paso 4 y la comorbilidad en el paso 6.'},
+{b:'gl',t:'GLADP',top:0,p:'¿Cuándo se elige un diagnóstico provisional?',r:'Cuando falta información o falta tiempo de evolución para confirmarlo',d:['Cuando el paciente no coopera con la entrevista','Cuando hay dos o más trastornos presentes','Cuando el cuadro es leve'],n:''},
+{b:'gl',t:'GLADP',top:1,p:'En el marco de Zeanah, ¿cuáles son los cuatro dominios de factores de riesgo?',r:'Del niño, del cuidador, de la relación y del contexto',d:['Biológicos, psicológicos, sociales y espirituales','Prenatales, perinatales, postnatales y actuales','Predisponentes, precipitantes, perpetuantes y protectores'],n:'El principio de fondo es el riesgo acumulativo.'},
+{b:'gl',t:'GLADP',top:0,p:'¿Qué significa el principio de riesgo acumulativo?',r:'Que ningún factor aislado explica el cuadro: lo que predice la psicopatología es la acumulación de riesgos',d:['Que el riesgo aumenta con la edad del paciente','Que los factores biológicos pesan más que los sociales','Que un solo factor grave basta para producir el trastorno'],n:''},
+{b:'gl',t:'GLADP',top:0,p:'¿Cuál es la diferencia entre factores distales y proximales?',r:'Los distales son remotos en el tiempo, como las complicaciones perinatales; los proximales son recientes y desencadenantes',d:['Los distales son biológicos y los proximales psicológicos','Los distales afectan al niño y los proximales a la familia','Los distales son reversibles y los proximales no'],n:''},
+{b:'gl',t:'Caso JJ',top:1,p:'En el caso de JJ, ¿qué hallazgo del examen mental descarta el espectro psicótico?',r:'«No alteraciones perceptivas» y pensamiento coherente, congruente y no delirante',d:['La ausencia de antecedentes familiares de esquizofrenia','La edad del paciente, demasiado temprana para una psicosis','El resultado normal del electroencefalograma'],n:'Sin alucinaciones ni delirios, el cuadro es del espectro obsesivo-ansioso.'},
+{b:'gl',t:'Caso JJ',top:0,p:'¿Cómo se distingue una obsesión de un delirio?',r:'El delirio se sostiene con certeza e irreductible a la lógica; la obsesión es intrusiva, egodistónica y genera malestar',d:['El delirio es visual y la obsesión es verbal','El delirio aparece en adultos y la obsesión en niños','El delirio dura más de un mes y la obsesión menos'],n:'JJ pregunta si no le va a pasar nada, revisa y reza: eso es duda obsesiva, no certeza delirante.'},
+{b:'gl',t:'Caso JJ',top:1,p:'¿Cuál es el diagnóstico principal del caso de JJ?',r:'Trastorno obsesivo-compulsivo (F42) con pobre insight, moderado a grave',d:['Esquizofrenia de inicio temprano','Trastorno de ansiedad generalizada','Episodio depresivo mayor grave con síntomas psicóticos'],n:'Sustentado en un Yale-Brown de 28 puntos.'},
+{b:'gl',t:'Caso JJ',top:0,p:'En el caso de JJ, ¿por qué el episodio depresivo se considera secundario y no primario?',r:'Porque aparece después y en el contexto del TOC y del desarraigo, que organizan el cuadro',d:['Porque no cumple cinco de los nueve criterios','Porque el paciente es menor de edad','Porque no hay antecedentes familiares de depresión'],n:'La jerarquía diagnóstica identifica cuál trastorno organiza la conducta sintomática.'},
+{b:'gl',t:'Caso JJ',top:1,p:'¿Cuál es la instrucción clave que debe darse a los padres de JJ?',r:'Dejar de dar reaseguramiento, porque responder «no te va a pasar nada» refuerza la compulsión de preguntar',d:['Ignorar por completo al niño cuando presente síntomas','Permitirle realizar sus rituales sin interrupción','Evitar que asista a la escuela hasta que mejore'],n:'El reaseguramiento alivia la ansiedad a corto plazo y mantiene el círculo.'},
+{b:'gl',t:'Caso JJ',top:0,p:'¿Cuál es el tratamiento psicoterapéutico de mayor evidencia para el TOC?',r:'Exposición con prevención de respuesta',d:['Asociación libre e interpretación','Silla vacía y psicodrama','Logoterapia e intención paradójica'],n:'Se acompaña de ISRS cuando la intensidad es moderada a grave.'},
+{b:'gl',t:'Caso JJ',top:0,p:'En el caso de JJ, ¿qué diagnóstico queda como provisional y por qué?',r:'El TEPT, porque falta documentar reviviscencias y reminiscencias del secuestro',d:['El TOC, porque falta repetir la escala de Yale-Brown','El TDAH, porque falta una evaluación neuropsicológica','La depresión, porque falta precisar el apetito'],n:'La evitación registrada es de contaminación, no del trauma.'}
+];
+
+// Tarjetas de memoria: término -> definición
+const FLASH = [
+{b:'p1',c:'Psiquiatría',v:'Rama de la medicina que previene, evalúa, diagnostica y trata los trastornos mentales. En corto: ciencia que estudia los trastornos mentales.'},
+{b:'p1',c:'Psicología',v:'Ciencia que estudia el comportamiento humano y los procesos mentales.'},
+{b:'p1',c:'Psicopatología',v:'Estudio de los procesos mentales alterados. Disciplina que estudia la naturaleza, causas y manifestaciones de las desviaciones del funcionamiento mental.'},
+{b:'p1',c:'Signo',v:'Manifestación objetiva y observable: cansancio, taquicardia, evitación, llanto.'},
+{b:'p1',c:'Síntoma',v:'Manifestación subjetiva expresada por el paciente: afirmación de miedo, delirios, alucinaciones.'},
+{b:'p1',c:'Síndrome',v:'Conjunto de signos y síntomas que aparecen juntos de forma recurrente, sin etiología única conocida.'},
+{b:'p1',c:'Episodio',v:'Período delimitado de tiempo con síntomas continuos que alcanzan el umbral de un trastorno.'},
+{b:'p1',c:'Psicoterapia',v:'Tratamiento de la mente mediante acompañamiento profesional que busca el cambio de pensamientos, emociones y conductas.'},
+{b:'p1',c:'Criterio diagnóstico',v:'Característica del trastorno consensuada por un grupo de expertos que ayuda a determinar el problema.'},
+{b:'p1',c:'Desarrollo humano (PNUD)',v:'Expansión de las capacidades y libertades de las personas. Tres aspectos: económico, educativo y calidad de vida.'},
+{b:'p1',c:'DALY',v:'Años potenciales de vida perdidos más años vividos con discapacidad. Un mal que debe minimizarse.'},
+{b:'p1',c:'QALY',v:'Años de vida ajustados por calidad: combina calidad y cantidad. Un bien que debe maximizarse.'},
+{b:'p1',c:'Carga de enfermedad (Burden)',v:'Dificultades en la salud física por acumulación de estresores. Cuatro cargas: económica, social, familiar y psicológica.'},
+{b:'p1',c:'Factor de riesgo',v:'Condición que aumenta la probabilidad de desarrollar un trastorno, sin ser determinante.'},
+{b:'p1',c:'Normalidad',v:'Concepto estadístico y normativo: lo común, lo frecuente, lo que concuerda con la norma social.'},
+{b:'p1',c:'PATHOS',v:'Pasión. Tres sentidos: sufrir, padecer o experimentar, y vivir la emoción.'},
+{b:'p2',c:'Diagnóstico',v:'Conocimiento adecuado: dia (verdadero) + gnosis (conocimiento). Conocimiento de los procesos de enfermedad mental.'},
+{b:'p2',c:'Diagnóstico nosológico',v:'Ponerle nombre de enfermedad al sufrimiento del paciente, apoyándose en los manuales.'},
+{b:'p2',c:'Examen mental',v:'Instrumento transversal y sincrónico que describe el estado psíquico en el momento de la entrevista.'},
+{b:'p2',c:'Alucinación',v:'Percepción sin estimulación sensorial de un objeto externo, vivida como real. Del griego aluo: espíritu extraviado.'},
+{b:'p2',c:'Ilusión',v:'Percepción de un estímulo real que se interpreta erróneamente. Requiere presencia de un objeto externo.'},
+{b:'p2',c:'Delirio',v:'Creencia falsa, basada en premisas falsas e irreductible a la lógica y a la razón.'},
+{b:'p2',c:'Afecto',v:'La reacción emocional observable del paciente durante la entrevista.'},
+{b:'p2',c:'Sensorio',v:'La conciencia de uno mismo y del entorno: alerta y orientación en tiempo, espacio y persona.'},
+{b:'p2',c:'Psicosis',v:'Conjunto de síntomas que afectan la mente y hacen perder cierto contacto con la realidad.'},
+{b:'p2',c:'Comorbilidad',v:'Presencia simultánea de dos o más trastornos, cada uno con sus propios criterios cumplidos.'},
+{b:'p2',c:'Diagnóstico diferencial',v:'Examen de los diagnósticos que pueden confundirse con el real, para descartarlos.'},
+{b:'p2',c:'Formulación diagnóstica',v:'Proceso clínico que guía desde el análisis psicopatológico hasta el planteamiento diagnóstico y el plan de trabajo.'},
+{b:'p2',c:'Trauma complejo',v:'El que implica experiencias negativas continuas: abuso, abandono o violencia.'},
+{b:'p2',c:'Mecanismo de defensa',v:'Herramienta psicológica personal e inconsciente que toma los traumas y los reprime.'},
+{b:'p2',c:'Psicología profunda',v:'Sinónimo del psicoanálisis: método de investigación complejo para detectar problemas mentales.'},
+{b:'p2',c:'Obsesión',v:'Idea fija o recurrente que irrumpe involuntariamente en el pensamiento. Pensamiento intrusivo.'},
+{b:'p2',c:'Taquipsiquia',v:'Aceleramiento del pensamiento. Su contrario es la bradipsiquia.'},
+{b:'p2',c:'Demencia',v:'Deficiencia de neuroplasticidad que provoca pérdida de memoria y de conciencia, principalmente en adultos mayores.'},
+{b:'p2',c:'Logoterapia',v:'Terapia que busca sanar a través del sentido de vida. Creada por Viktor Frankl.'},
+{b:'p2',c:'Principio de Zeigarnik',v:'Tendencia a recordar mejor las tareas interrumpidas que las completadas.'},
+{b:'p2',c:'Neurosis noógena',v:'Sufrimiento que nace del vacío existencial y de la falta de sentido de vida. Dimensión noética.'},
+{b:'p2',c:'Distimia (F34.1)',v:'Estado depresivo leve de más de dos años; en niños, más de un año. Trastorno depresivo persistente.'},
+{b:'p2',c:'Alexitimia',v:'Incapacidad de identificar y expresar verbalmente las propias emociones. Se acompaña de lenguaje aprosódico.'},
+{b:'p2',c:'Anhedonia',v:'Pérdida de la capacidad de sentir placer en actividades antes placenteras.'},
+{b:'p2',c:'Anergia',v:'Falta de energía para hacer las cosas.'},
+{b:'gl',c:'Formulación diagnóstica integral',v:'El diagnóstico final del GLADP: formulación multiaxial de 4 ejes más formulación idiográfica de 3 apartados.'},
+{b:'gl',c:'Riesgo acumulativo',v:'Ningún factor aislado explica el cuadro: lo que predice la psicopatología es la acumulación de riesgos.'},
+{b:'gl',c:'Factores distales',v:'Remotos en el tiempo: complicaciones perinatales, carga genética, trauma craneoencefálico temprano.'},
+{b:'gl',c:'Factores proximales',v:'Recientes y desencadenantes: un evento traumático, una mudanza forzada, violencia intrafamiliar actual.'}
+];
+
+// Tablas de los modelos para completar
+const TABLAS = [
+{m:'Neurobiológico',ant:'Ve al ser humano como una máquina',fil:'Materialismo, mecanicismo, positivismo-empirismo',sal:'Físicamente sano, con respuestas neurofisiológicas y conductuales adecuadas y buen manejo del estrés',psi:'Hombre desbordado por el estrés y afecciones orgánicas'},
+{m:'Psicodinámico',ant:'Hombre pulsional',fil:'Idealismo, fenomenología y estructuralismo',sal:'Procesos intrapsíquicos satisfechos',psi:'Hombre dominado por pulsiones sexuales y agresivas mal manejadas'},
+{m:'Conductual',ant:'Hombre producto del aprendizaje',fil:'Empirismo, pragmatismo, positivismo, mecanicismo y utilitarismo',sal:'Conductas adaptativas al entorno',psi:'Conductas desadaptativas y conflictivas'},
+{m:'Cognitivo',ant:'Hombre procesador de datos (computadora)',fil:'Epicureísmo, racionalismo, positivismo, estructuralismo y utilitarismo',sal:'Ideas realistas y racionales',psi:'Ideas irreales e irracionales'},
+{m:'Humanista',ant:'Hombre realizado, con desarrollo natural y autotrascendencia',fil:'Idealismo kantiano, fenomenología y personalismo',sal:'Necesidades satisfechas',psi:'Necesidades frustradas o inconclusas'},
+{m:'Gestalt',ant:'Hombre con experiencia plena',fil:'Fenomenología y existencialismo',sal:'Vive sus experiencias con plenitud y las cierra',psi:'No tiene cierre en las experiencias y queda frustrado'},
+{m:'Fenomenológico-existencial',ant:'Hombre con valores y proyecto de vida',fil:'Fenomenología, existencialismo, personalismo y estoicismo',sal:'Elige de manera coherente y consecuente un proyecto de vida',psi:'Hombre sin proyecto de vida'},
+{m:'Análisis transaccional',ant:'Hombre relacional',fil:'Positivismo y racionalismo',sal:'Transacciones adultas; sabe manejar a su Padre y a su Niño',psi:'Transacciones inmaduras y ulteriores'}
+];
+const COLS = [{k:'ant',t:'Antropología'},{k:'fil',t:'Filosofía'},{k:'sal',t:'Salud mental'},{k:'psi',t:'Psicopatología'}];
+
+// Caso GLADP paso a paso
+const CASO = {
+titulo:'JJ, 10 años',
+ficha:'Varón de 10 años, quinto primaria. Motivo de consulta: quejas somáticas de un año de evolución. «Lo traigo porque está muy nervioso, le duele todo» (sic padre).',
+datos:[
+ ['Antecedentes','Hipoxia perinatal con intubación 5 días, APGAR 7/9. Trauma craneoencefálico a los 2 años. Retraso del lenguaje con terapia. A los 4 años 10 meses, temor a que la madre muera.'],
+ ['Precipitante','En octubre roban el carro y secuestran al padre una hora. Siguen amenazas telefónicas. La familia se muda de casa y de escuela sin despedirse.'],
+ ['Síntomas actuales','Crisis con palpitaciones, opresión torácica, parestesias, bolo faríngeo y miedo a morir. Temor a enfermarse y contaminarse. Reza, se revisa las manos, repite los dibujos, guarda papeles. Se golpea la cabeza. Más de un mes adinámico, anhedónico y triste.'],
+ ['Examen mental','Consciente, orientado. Ánimo triste, afecto hipotímico congruente. Sin alteraciones perceptivas. Pensamiento coherente, no delirante. Ideas obsesivas hipocondríacas. Juicio heterocrítico adecuado, autocrítico inadecuado. Conciencia de problema ausente.'],
+ ['Pruebas','Yale-Brown 28 puntos. EEG con inmadurez dieléctrica, sin actividad epileptógena. Médico descartó patología física.']
+],
+pasos:[
+ {n:'Paso 2',p:'¿Cuál es el área predominantemente afectada?',
+  o:['Afectividad y cognición (contenido del pensamiento)','Sensopercepción','Relaciones interpersonales únicamente','Sensorio y cognición'],
+  r:0,e:'Hay ansiedad paroxística y ánimo triste (afectividad) más obsesiones hipocondríacas (contenido del pensamiento). La sensopercepción está conservada: el examen mental dice «no alteraciones perceptivas».'},
+ {n:'Paso 3',p:'¿Con qué grandes cuadros psicopatológicos se relaciona?',
+  o:['Espectro obsesivo-compulsivo, ansiedad, trauma y afectivos','Espectro de la esquizofrenia','Demencias y trastornos cognitivos','Trastornos de la personalidad'],
+  r:0,e:'El área afectada conduce a cuatro candidatos. El espectro psicótico queda fuera desde el paso anterior.'},
+ {n:'Paso 4',p:'¿Por qué se descarta la esquizofrenia?',
+  o:['Porque no hay delirios ni alucinaciones, y el pensamiento es coherente y no delirante','Porque el paciente es demasiado joven','Porque el EEG salió normal','Porque no hay antecedentes familiares'],
+  r:0,e:'Las ideas hipocondríacas son obsesivas —con duda y malestar— y no delirantes. Sin alteraciones perceptivas ni síntomas negativos, el espectro psicótico queda descartado.'},
+ {n:'Paso 4',p:'¿Por qué el TDAH queda como antecedente y no como diagnóstico actual?',
+  o:['Porque el examen mental actual reporta atención y concentración adecuadas','Porque no hubo hiperactividad en la infancia','Porque no existe carga familiar','Porque el TDAH no se diagnostica después de los 7 años'],
+  r:0,e:'Hubo inquietud e inatención en la primera infancia y hay tíos maternos con TDAH, pero la inquietud actual es psicomotora de origen ansioso.'},
+ {n:'Paso 5',p:'¿Cuál es el diagnóstico principal?',
+  o:['TOC (F42) con pobre insight, moderado a grave','Trastorno de ansiedad generalizada','Episodio depresivo mayor grave','Trastorno de síntomas somáticos'],
+  r:0,e:'Yale-Brown de 28 lo ubica en rango moderado a grave. El pobre insight viene de la conciencia de problema ausente y el juicio autocrítico inadecuado.'},
+ {n:'Paso 6',p:'¿Qué tipo de diagnóstico corresponde al cerrar el proceso?',
+  o:['De comorbilidad, con el TOC como eje','Definitivo y único','Provisional en su totalidad','Sin diagnóstico por información insuficiente'],
+  r:0,e:'Coexisten TOC, trastorno de angustia y episodio depresivo, cada uno con criterios propios. El TEPT queda provisional.'},
+ {n:'Plan',p:'¿Qué se aborda primero en el plan de tratamiento?',
+  o:['La seguridad: contención de la autoagresión y psicoeducación familiar','La exposición con prevención de respuesta','El procesamiento del trauma del secuestro','La derivación a terapia de lenguaje'],
+  r:0,e:'La conducta de golpearse y la frase «no quiere vivir así» obligan a priorizar el riesgo antes que cualquier técnica específica.'}
+]
+};
+</script>
+<script>
+(function(){
+'use strict';
+var $=function(i){return document.getElementById(i)};
+var BLOQ={p1:'1er parcial',p2:'2do parcial',gl:'GLADP'};
+
+/* ---------- almacenamiento tolerante ---------- */
+function load(k,f){try{var v=localStorage.getItem('psico.'+k);return v?JSON.parse(v):f}catch(e){return f}}
+function save(k,v){try{localStorage.setItem('psico.'+k,JSON.stringify(v))}catch(e){}}
+
+/* ---------- tema ---------- */
+var tema=load('tema',null);
+if(tema)document.documentElement.setAttribute('data-theme',tema);
+$('tema').onclick=function(){
+  var cur=document.documentElement.getAttribute('data-theme');
+  if(!cur)cur=matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light';
+  var nx=cur==='dark'?'light':'dark';
+  document.documentElement.setAttribute('data-theme',nx);save('tema',nx);
+};
+
+/* ---------- estado ---------- */
+var S={ruta:'top',bloque:'all',modo:null,lista:[],i:0,pts:0,ok:0,no:0,rac:0,mejor:0,fallos:[],resp:false};
+
+function barajar(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t}return a}
+function filtra(arr,usarTop){
+  return arr.filter(function(q){
+    if(S.bloque!=='all'&&q.b!==S.bloque)return false;
+    if(usarTop&&S.ruta==='top'&&!q.top)return false;
+    return true;
+  });
+}
+var SEC=['scInicio','scModos','scQuiz','scFlash','scTabla','scCaso','scFin'];
+function ver(id){SEC.forEach(function(s){$(s).hidden=(s!==id)});window.scrollTo(0,0)}
+function hud(on){$('hud').hidden=!on}
+function prog(p){$('bar').style.width=(p*100)+'%'}
+
+/* ---------- inicio ---------- */
+$('nTop').textContent=BANCO.filter(function(q){return q.top}).length+' preguntas';
+$('nFull').textContent=BANCO.length+' preguntas';
+
+Array.prototype.forEach.call(document.querySelectorAll('[data-ruta]'),function(b){
+  b.onclick=function(){S.ruta=b.getAttribute('data-ruta');irModos()};
+});
+$('home').onclick=function(){hud(false);prog(0);ver('scInicio')};
+
+function irModos(){
+  $('subModo').textContent=(S.ruta==='top'?'Ruta esencial':'Ruta completa')+' · toca el bloque para filtrar.';
+  pintaFiltros();pintaFallos();hud(false);prog(0);ver('scModos');
+}
+function pintaFiltros(){
+  var z=$('filtros');z.innerHTML='';
+  var ops=[['all','Todo']].concat(Object.keys(BLOQ).map(function(k){return [k,BLOQ[k]]}));
+  ops.forEach(function(o){
+    var b=document.createElement('button');
+    b.className='pill';b.textContent=o[1];
+    b.setAttribute('aria-pressed',S.bloque===o[0]?'true':'false');
+    var n=o[0]==='all'?filtraCount(null):filtraCount(o[0]);
+    b.textContent=o[1]+' · '+n;
+    b.onclick=function(){S.bloque=o[0];pintaFiltros()};
+    z.appendChild(b);
+  });
+}
+function filtraCount(b){
+  return BANCO.filter(function(q){
+    if(b&&q.b!==b)return false;
+    if(S.ruta==='top'&&!q.top)return false;
+    return true;
+  }).length;
+}
+function pintaFallos(){
+  var f=load('fallos',[]);var z=$('zonaFallos');z.innerHTML='';
+  if(!f.length)return;
+  var b=document.createElement('button');
+  b.className='btn ghost';b.textContent='Repasar mis '+f.length+' preguntas falladas';
+  b.onclick=function(){
+    var set={};f.forEach(function(x){set[x]=1});
+    var l=BANCO.filter(function(q){return set[q.p]});
+    if(!l.length)return;
+    arranca('quiz',barajar(l));
+  };
+  z.appendChild(b);
+}
+Array.prototype.forEach.call(document.querySelectorAll('[data-modo]'),function(b){
+  b.onclick=function(){
+    var m=b.getAttribute('data-modo');
+    if(m==='quiz'){var l=filtra(BANCO,true);if(!l.length){alert('No hay preguntas con ese filtro.');return}arranca('quiz',barajar(l))}
+    else if(m==='flash'){var f=FLASH.filter(function(c){return S.bloque==='all'||c.b===S.bloque});
+      if(!f.length){alert('No hay tarjetas de ese bloque.');return}arranca('flash',barajar(f))}
+    else if(m==='tabla')arrancaTabla();
+    else arrancaCaso();
+  };
+});
+
+function arranca(modo,lista){
+  S.modo=modo;S.lista=lista;S.i=0;S.pts=0;S.ok=0;S.no=0;S.rac=0;S.mejor=0;S.fallos=[];S.resp=false;
+  hud(modo==='quiz');
+  if(modo==='quiz'){pintaQ();ver('scQuiz')}
+  else{pintaF();ver('scFlash')}
+}
+
+/* ---------- quiz ---------- */
+function pintaQ(){
+  var q=S.lista[S.i];S.resp=false;
+  prog(S.i/S.lista.length);
+  $('cPts').textContent=S.pts+' pts';
+  $('cPos').textContent=(S.i+1)+'/'+S.lista.length;
+  $('cRac').hidden=S.rac<2;$('cRac').textContent='racha '+S.rac;
+  var m=$('qMeta');m.innerHTML='';
+  m.appendChild(lbl(BLOQ[q.b],'b'));
+  m.appendChild(lbl(q.t,''));
+  if(q.top)m.appendChild(lbl('★ alta','star'));
+  $('qTxt').textContent=q.p;$('qTxt').className='q pop';
+  var ops=barajar([q.r].concat(q.d));
+  var z=$('qOpts');z.innerHTML='';
+  ops.forEach(function(txt,n){
+    var b=document.createElement('button');
+    b.className='opt';b.type='button';
+    b.innerHTML='<span class="key">'+(n+1)+'</span><span></span>';
+    b.lastChild.textContent=txt;
+    b.onclick=function(){responde(b,txt,q,z)};
+    z.appendChild(b);
+  });
+  $('qFb').innerHTML='';$('qNext').hidden=true;
+}
+function lbl(t,c){var s=document.createElement('span');s.className='lbl'+(c?' '+c:'');s.textContent=t;return s}
+
+function responde(btn,txt,q,zona){
+  if(S.resp)return;S.resp=true;
+  var bien=(txt===q.r);
+  Array.prototype.forEach.call(zona.children,function(b){
+    b.disabled=true;
+    var t=b.lastChild.textContent;
+    if(t===q.r)b.className='opt ok';
+    else if(b===btn)b.className='opt no';
+  });
+  if(bien){
+    S.ok++;S.rac++;if(S.rac>S.mejor)S.mejor=S.rac;
+    S.pts+=10+Math.min(S.rac-1,5)*2;
+  }else{
+    S.no++;S.rac=0;S.fallos.push(q.p);
+  }
+  $('cPts').textContent=S.pts+' pts';
+  $('cRac').hidden=S.rac<2;$('cRac').textContent='racha '+S.rac;
+  var fb=document.createElement('div');fb.className='fb '+(bien?'ok':'no');
+  var v=document.createElement('div');v.className='v '+(bien?'ok':'no');
+  v.textContent=bien?(S.rac>=3?'Correcto · racha de '+S.rac:'Correcto'):'Revisa esta';
+  fb.appendChild(v);
+  if(!bien){var p0=document.createElement('p');p0.innerHTML='<b>Respuesta:</b> ';
+    p0.appendChild(document.createTextNode(q.r));fb.appendChild(p0)}
+  if(q.n){var p=document.createElement('p');p.textContent=q.n;p.style.marginTop=bien?'0':'6px';fb.appendChild(p)}
+  $('qFb').innerHTML='';$('qFb').appendChild(fb);
+  $('qNext').hidden=false;
+  $('qNext').textContent=(S.i+1>=S.lista.length)?'Ver resultado':'Siguiente';
+  $('qNext').focus();
+}
+$('qNext').onclick=function(){
+  S.i++;
+  if(S.i>=S.lista.length)fin();else pintaQ();
+};
+document.addEventListener('keydown',function(e){
+  if($('scQuiz').hidden&&$('scCaso').hidden)return;
+  var z=$('scQuiz').hidden?$('kOpts'):$('qOpts');
+  var nx=$('scQuiz').hidden?$('kNext'):$('qNext');
+  if(e.key>='1'&&e.key<='4'){var b=z.children[+e.key-1];if(b&&!b.disabled)b.click()}
+  else if(e.key==='Enter'&&!nx.hidden)nx.click();
+});
+
+/* ---------- flashcards ---------- */
+var volteada=false;
+function pintaF(){
+  var c=S.lista[S.i];volteada=false;
+  prog(S.i/S.lista.length);
+  var m=$('fMeta');m.innerHTML='';
+  m.appendChild(lbl(BLOQ[c.b],'b'));
+  m.appendChild(lbl((S.i+1)+' de '+S.lista.length,''));
+  $('fTxt').className='term';$('fTxt').textContent=c.c;
+  $('fCard').className='flash pop';
+}
+$('fCard').onclick=function(){
+  var c=S.lista[S.i];volteada=!volteada;
+  $('fTxt').className=volteada?'def':'term';
+  $('fTxt').textContent=volteada?c.v:c.c;
+};
+$('fNext').onclick=function(){
+  if(S.i+1>=S.lista.length){prog(1);ver('scModos');return}
+  S.i++;pintaF();
+};
+$('fPrev').onclick=function(){if(S.i>0){S.i--;pintaF()}};
+
+/* ---------- tablas ---------- */
+function arrancaTabla(){
+  var z=$('tZona');z.innerHTML='';
+  var bolsas={};
+  COLS.forEach(function(c){bolsas[c.k]=barajar(TABLAS.map(function(f){return f[c.k]}))});
+  barajar(TABLAS).forEach(function(fila){
+    var d=document.createElement('div');d.className='tcard';
+    var h=document.createElement('h3');h.textContent=fila.m;d.appendChild(h);
+    COLS.forEach(function(c){
+      var s=document.createElement('div');s.className='slot';s.setAttribute('data-ok',fila[c.k]);
+      var l=document.createElement('span');l.className='cl';l.textContent=c.t;s.appendChild(l);
+      var sel=document.createElement('select');
+      var o0=document.createElement('option');o0.value='';o0.textContent='— escoge —';sel.appendChild(o0);
+      bolsas[c.k].forEach(function(v){var o=document.createElement('option');o.value=v;o.textContent=v;sel.appendChild(o)});
+      s.appendChild(sel);
+      var r=document.createElement('div');r.className='real';r.textContent='Correcta: '+fila[c.k];s.appendChild(r);
+      d.appendChild(s);
+    });
+    z.appendChild(d);
+  });
+  $('tRevisar').hidden=false;$('tVolver').hidden=true;
+  hud(false);prog(0);ver('scTabla');
+}
+$('tRevisar').onclick=function(){
+  var slots=document.querySelectorAll('#tZona .slot'),ok=0;
+  Array.prototype.forEach.call(slots,function(s){
+    var sel=s.querySelector('select');
+    if(sel.value===s.getAttribute('data-ok')){s.className='slot ok';ok++}
+    else s.className='slot no';
+    sel.disabled=true;
+  });
+  S.ok=ok;S.no=slots.length-ok;S.mejor=0;S.pts=ok*10;S.modo='tabla';
+  prog(1);$('tRevisar').hidden=true;$('tVolver').hidden=false;
+  setTimeout(fin,450);
+};
+$('tVolver').onclick=irModos;
+
+/* ---------- caso ---------- */
+function arrancaCaso(){
+  $('cTit').textContent='Caso clínico · '+CASO.titulo;
+  $('cFicha').textContent=CASO.ficha;
+  var dl=document.createElement('dl');
+  CASO.datos.forEach(function(d){
+    var dt=document.createElement('dt');dt.textContent=d[0];
+    var dd=document.createElement('dd');dd.textContent=d[1];
+    dl.appendChild(dt);dl.appendChild(dd);
+  });
+  $('cDatos').innerHTML='';$('cDatos').appendChild(dl);
+  S.modo='caso';S.lista=CASO.pasos;S.i=0;S.ok=0;S.no=0;S.pts=0;S.rac=0;S.mejor=0;S.resp=false;
+  pintaK();hud(false);ver('scCaso');
+}
+function pintaK(){
+  var k=S.lista[S.i];S.resp=false;
+  prog(S.i/S.lista.length);
+  var m=$('kMeta');m.innerHTML='';
+  m.appendChild(lbl(k.n,'b'));
+  m.appendChild(lbl((S.i+1)+' de '+S.lista.length,''));
+  $('kTxt').textContent=k.p;$('kTxt').className='q pop';
+  var z=$('kOpts');z.innerHTML='';
+  var pares=barajar(k.o.map(function(t,n){return {t:t,ok:n===k.r}}));
+  pares.forEach(function(par,n){
+    var b=document.createElement('button');b.className='opt';b.type='button';
+    b.innerHTML='<span class="key">'+(n+1)+'</span><span></span>';
+    b.lastChild.textContent=par.t;
+    b.onclick=function(){
+      if(S.resp)return;S.resp=true;
+      Array.prototype.forEach.call(z.children,function(x,j){
+        x.disabled=true;
+        if(pares[j].ok)x.className='opt ok';
+        else if(x===b)x.className='opt no';
+      });
+      if(par.ok){S.ok++;S.pts+=10}else S.no++;
+      var fb=document.createElement('div');fb.className='fb '+(par.ok?'ok':'no');
+      var v=document.createElement('div');v.className='v '+(par.ok?'ok':'no');
+      v.textContent=par.ok?'Correcto':'Revisa este paso';
+      var p=document.createElement('p');p.textContent=k.e;
+      fb.appendChild(v);fb.appendChild(p);
+      $('kFb').innerHTML='';$('kFb').appendChild(fb);
+      $('kNext').hidden=false;
+      $('kNext').textContent=(S.i+1>=S.lista.length)?'Ver resultado':'Siguiente paso';
+      $('kNext').focus();
+    };
+    z.appendChild(b);
+  });
+  $('kFb').innerHTML='';$('kNext').hidden=true;
+}
+$('kNext').onclick=function(){S.i++;if(S.i>=S.lista.length)fin();else pintaK()};
+
+/* ---------- resultado ---------- */
+function fin(){
+  var tot=S.ok+S.no,pct=tot?Math.round(S.ok/tot*100):0;
+  prog(1);hud(false);
+  $('rPct').textContent=pct+'%';
+  $('rOf').textContent=S.ok+' de '+tot+(S.modo==='tabla'?' celdas':' preguntas')+' · '+S.pts+' puntos';
+  $('rOk').textContent=S.ok;$('rNo').textContent=S.no;$('rRac').textContent=S.mejor;
+  var t;
+  if(pct===100)t='Cuadro perfecto. Pasa al siguiente bloque o sube la dificultad con la ruta completa.';
+  else if(pct>=85)t='Muy sólido. Repasa solo las que fallaste y ya quedas.';
+  else if(pct>=70)t='Vas bien. Las falladas son las que conviene machacar ahora.';
+  else if(pct>=50)t='A medio camino. Repasa el bloque en modo tarjetas y vuelve al quiz.';
+  else t='Conviene leer la guía de ese bloque antes de volver a intentarlo.';
+  $('rTxt').textContent=t;
+  if(S.modo==='quiz'){
+    var prev=load('fallos',[]),set={};
+    prev.concat(S.fallos).forEach(function(x){set[x]=1});
+    // quitar de la lista las que ya se acertaron en esta ronda
+    S.lista.slice(0,S.i).forEach(function(q){if(S.fallos.indexOf(q.p)<0)delete set[q.p]});
+    save('fallos',Object.keys(set));
+    var best=load('best',{}),key=S.ruta+'.'+S.bloque;
+    if(!best[key]||pct>best[key]){best[key]=pct;save('best',best)}
+  }
+  $('rFallos').hidden=!(S.modo==='quiz'&&S.fallos.length);
+  ver('scFin');
+}
+$('rFallos').onclick=function(){
+  var set={};S.fallos.forEach(function(x){set[x]=1});
+  var l=BANCO.filter(function(q){return set[q.p]});
+  if(l.length)arranca('quiz',barajar(l));
+};
+$('rOtra').onclick=irModos;
+
+ver('scInicio');
+})();
+</script>
